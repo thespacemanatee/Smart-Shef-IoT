@@ -2,9 +2,10 @@ import React from "react";
 import { StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { Card } from "react-native-paper";
 
+import { SPACING } from "../../resources/dimens";
 import { Recipe } from "../../types";
-import CustomParagraph from "../elements/CustomParagraph";
-import CustomTitle from "../elements/CustomTitle";
+import Paragraph from "../elements/Paragraph";
+import Title from "../elements/Title";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -23,8 +24,8 @@ const RecipeCard = ({ recipe }: RecipeCardProps): JSX.Element => {
             height={100}
           />
           <Card.Content style={styles.cardContent}>
-            <CustomTitle>{recipe.name}</CustomTitle>
-            <CustomParagraph>{recipe.description}</CustomParagraph>
+            <Title>{recipe.name}</Title>
+            <Paragraph>{recipe.description}</Paragraph>
           </Card.Content>
         </View>
       </TouchableNativeFeedback>
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardContent: {
-    padding: 24,
+    padding: SPACING.spacing_24,
   },
 });

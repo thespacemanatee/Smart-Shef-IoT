@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 
 import { useAppSelector } from "../app/hooks";
+import Title from "../components/elements/Title";
 import RecipeCard from "../components/ui/RecipeCard";
 import MQTTWrapper from "../config/mqtt";
+import { FONT_SIZE, SPACING } from "../resources/dimens";
 
 const DashboardScreen = () => {
   const recipes = useAppSelector(state => state.recipe.recipes);
@@ -21,13 +23,15 @@ const DashboardScreen = () => {
   }, []);
 
   return (
-    <View style={{ flexGrow: 1, backgroundColor: "white" }}>
-      <Text style={{ fontSize: 20 }}>Smart Shef</Text>
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
+    <View style={styles.screen}>
+      <View style={styles.titleContainer}>
+        <Title style={styles.titleText}>My Recipes</Title>
+      </View>
+      <ScrollView contentContainerStyle={styles.scrollViewContentContainer}>
         {recipes.map(recipe => {
           return (
-            <View style={styles.cardContainer}>
-              <RecipeCard key={recipe.id} recipe={recipe} />
+            <View key={recipe.id} style={styles.cardContainer}>
+              <RecipeCard recipe={recipe} />
             </View>
           );
         })}
@@ -39,7 +43,20 @@ const DashboardScreen = () => {
 export default DashboardScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    flexGrow: 1,
+    backgroundColor: "white",
+  },
+  titleContainer: {
+    padding: SPACING.spacing_16,
+  },
+  titleText: {
+    fontSize: FONT_SIZE.title1,
+  },
+  scrollViewContentContainer: {
+    paddingHorizontal: SPACING.spacing_16,
+  },
   cardContainer: {
-    marginBottom: 16,
+    marginBottom: SPACING.spacing_16,
   },
 });
