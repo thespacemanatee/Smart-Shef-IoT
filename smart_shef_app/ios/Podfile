@@ -17,6 +17,7 @@ target 'smart_shef_app' do
   target 'smart_shef_appTests' do
     inherit! :complete
     # Pods for testing
+    pod 'MQTTClient'
   end
 
   # Enables Flipper.
