@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 import Animated, {
   Extrapolate,
@@ -8,19 +8,26 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Modal, Portal } from "react-native-paper";
 
 import { useAppSelector } from "../app/hooks";
 import Title from "../components/elements/Title";
 import RecipeCard from "../components/ui/RecipeCard";
 import MQTTWrapper from "../config/mqtt";
-import { ELEVATION, FONT_SIZE, SPACING } from "../resources/dimens";
+import { FONT_SIZE, SPACING } from "../resources/dimens";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
 const DashboardScreen = () => {
   const recipes = useAppSelector(state => state.recipe.recipes);
+  const [visible, setVisible] = useState(false);
   const [mqttClient, setMqttClient] = useState<IMqttClient>();
   const scrollOffset = useSharedValue(0);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
 
   useEffect(() => {
     const getMQTTClient = async () => {
@@ -49,10 +56,21 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.screen}>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={styles.modalContainer}>
+          <Text>{`${JSON.stringify(mqttClient)}`}</Text>
+        </Modal>
+      </Portal>
       <Animated.View style={styles.titleContainer}>
         <Title style={[styles.titleText, titleTextAnimatedStyle]}>
           My Recipes
         </Title>
+        <TouchableOpacity onPress={showModal}>
+          <Icon name="bug" size={30} />
+        </TouchableOpacity>
       </Animated.View>
       <Animated.ScrollView
         onScroll={scrollHandler}
@@ -77,8 +95,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "white",
   },
-  titleContainer: {
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    margin: SPACING.spacing_32,
+    borderRadius: SPACING.spacing_8,
     padding: SPACING.spacing_16,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    padding: SPACING.spacing_16,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   titleText: {
     fontSize: FONT_SIZE.title1,
