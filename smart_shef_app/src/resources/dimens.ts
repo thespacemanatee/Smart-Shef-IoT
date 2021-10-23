@@ -30,6 +30,8 @@ export const FONT_SIZE = {
 };
 
 export const ELEVATION = {
+  elevation_0: 0,
+  elevation_2: 2,
   elevation_4: 4,
   elevation_6: 6,
   elevation_8: 8,

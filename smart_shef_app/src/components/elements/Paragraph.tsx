@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleProp, TextStyle, Text, StyleSheet } from "react-native";
+import { StyleProp, TextStyle, StyleSheet } from "react-native";
+import Animated from "react-native-reanimated";
 
 import { FONT_SIZE } from "../../resources/dimens";
 
@@ -8,7 +9,7 @@ interface ParagraphProps {
 }
 
 const Paragraph: React.FC<ParagraphProps> = ({ children, style }) => {
-  return <Text style={[styles.text, style]}>{children}</Text>;
+  return <Animated.Text style={[styles.text, style]}>{children}</Animated.Text>;
 };
 
 Paragraph.defaultProps = {

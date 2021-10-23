@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import Animated from "react-native-reanimated";
 
 import { FONT_SIZE } from "../../resources/dimens";
 
@@ -8,7 +9,7 @@ interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ children, style }) => {
-  return <Text style={[styles.text, style]}>{children}</Text>;
+  return <Animated.Text style={[styles.text, style]}>{children}</Animated.Text>;
 };
 
 Title.defaultProps = {
