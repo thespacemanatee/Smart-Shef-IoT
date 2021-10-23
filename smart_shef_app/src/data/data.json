@@ -11,6 +11,12 @@
       "name": "Popcorn",
       "description": "Pop your cornz",
       "imageUrl": "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/popcorn.jpeg?raw=true"
+    },
+    {
+      "id": 3,
+      "name": "Sunny-Side Up",
+      "description": "Sizzle dem eggs",
+      "imageUrl": "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/popcorn.jpeg?raw=true"
     }
   ]
 }

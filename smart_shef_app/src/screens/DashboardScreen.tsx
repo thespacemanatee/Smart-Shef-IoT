@@ -24,10 +24,10 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.titleContainer}>
-        <Title style={styles.titleText}>My Recipes</Title>
-      </View>
       <ScrollView contentContainerStyle={styles.scrollViewContentContainer}>
+        <View style={styles.titleContainer}>
+          <Title style={styles.titleText}>My Recipes</Title>
+        </View>
         {recipes.map(recipe => {
           return (
             <View key={recipe.id} style={styles.cardContainer}>
