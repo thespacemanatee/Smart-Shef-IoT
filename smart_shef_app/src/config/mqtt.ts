@@ -2,9 +2,11 @@ import MQTT, { IMqttClient } from "sp-react-native-mqtt";
 import { v4 as uuidv4 } from "uuid";
 
 class MQTTWrapper {
-  static instance: MQTTWrapper;
+  private static instance: MQTTWrapper;
 
-  static client: IMqttClient;
+  private static client: IMqttClient;
+
+  private static sessionId: string;
 
   constructor(client: IMqttClient) {
     if (typeof client === "undefined") {
@@ -14,30 +16,37 @@ class MQTTWrapper {
     }
   }
 
+  static getCurrentSessionId() {
+    return this.sessionId;
+  }
+
   static async getClientInstanceAsync() {
     if (MQTTWrapper.instance) {
       return MQTTWrapper.client;
     }
     MQTTWrapper.instance = this;
     try {
-      MQTTWrapper.client = await MQTT.createClient({
+      const sessionId = uuidv4();
+      const client = await MQTT.createClient({
         uri: "mqtt://broker.hivemq.com:1883",
-        clientId: uuidv4(),
+        clientId: sessionId,
       });
-      MQTTWrapper.client.connect();
-      MQTTWrapper.client.on("connect", () => {
-        MQTTWrapper.client.publish("smartchef/1", "Hello, world!!", 2, true);
+      client.connect();
+      client.on("connect", () => {
+        client.subscribe("smartshef/1", 1);
         console.log("Connection established");
       });
-      MQTTWrapper.client.on("message", msg => {
-        console.log(`Message: ${msg}`);
+      client.on("message", msg => {
+        console.log(`Message: ${msg.data}`);
       });
-      MQTTWrapper.client.on("error", err => {
+      client.on("error", err => {
         console.log(`Connection error: ${err}`);
       });
-      MQTTWrapper.client.on("closed", () => {
+      client.on("closed", () => {
         console.log("Connection closed");
       });
+      MQTTWrapper.client = client;
+      MQTTWrapper.sessionId = sessionId;
     } catch (err) {
       console.error(err);
     }
