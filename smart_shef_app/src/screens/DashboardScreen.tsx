@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 import Animated, {
   Extrapolate,
@@ -9,7 +9,6 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Modal, Portal } from "react-native-paper";
 
 import { useAppSelector } from "../app/hooks";
