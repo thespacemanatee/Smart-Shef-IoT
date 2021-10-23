@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Button, Card, Paragraph, Title } from "react-native-paper";
 import { IMqttClient } from "sp-react-native-mqtt";
+import RecipeCard from "../components/ui/RecipeCard";
 
 import MQTTWrapper from "../config/mqtt";
 
@@ -21,23 +22,7 @@ const DashboardScreen = () => {
   return (
     <View style={{}}>
       <Text>Smart Shef</Text>
-      <Card>
-        <Card.Cover
-          source={{
-            uri: "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/pancake.jpeg?raw=true",
-          }}
-          width={100}
-          height={100}
-        />
-        <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content>
-        <Card.Actions>
-          <Button onPress={() => {}}>Cancel</Button>
-          <Button onPress={() => {}}>Ok</Button>
-        </Card.Actions>
-      </Card>
+      <RecipeCard />
     </View>
   );
 };
