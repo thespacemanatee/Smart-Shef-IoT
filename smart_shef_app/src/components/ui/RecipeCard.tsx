@@ -1,29 +1,53 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button, Card, Paragraph, Title } from "react-native-paper";
+import { StyleSheet, TouchableNativeFeedback, View } from "react-native";
+import { Card } from "react-native-paper";
 
-const RecipeCard = () => {
+import { Recipe } from "../../types";
+import CustomParagraph from "../elements/CustomParagraph";
+import CustomTitle from "../elements/CustomTitle";
+
+interface RecipeCardProps {
+  recipe: Recipe;
+}
+
+const RecipeCard = ({ recipe }: RecipeCardProps): JSX.Element => {
   return (
-    <Card>
-      <Card.Cover
-        source={{
-          uri: "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/pancake.jpeg?raw=true",
-        }}
-        width={100}
-        height={100}
-      />
-      <Card.Content>
-        <Title>Card title</Title>
-        <Paragraph>Card content</Paragraph>
-      </Card.Content>
-      <Card.Actions>
-        <Button onPress={() => {}}>Cancel</Button>
-        <Button onPress={() => {}}>Ok</Button>
-      </Card.Actions>
+    <Card style={styles.card}>
+      <TouchableNativeFeedback onPress={() => {}} useForeground>
+        <View>
+          <Card.Cover
+            source={{
+              uri: recipe.imageUrl,
+            }}
+            width={100}
+            height={100}
+          />
+          <Card.Content style={styles.cardContent}>
+            <CustomTitle>{recipe.name}</CustomTitle>
+            <CustomParagraph>{recipe.description}</CustomParagraph>
+          </Card.Content>
+        </View>
+      </TouchableNativeFeedback>
     </Card>
   );
 };
 
 export default RecipeCard;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  card: {
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  cardContent: {
+    padding: 24,
+  },
+});

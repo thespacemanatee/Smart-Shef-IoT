@@ -1,13 +1,15 @@
 {
   "recipes": [
     {
+      "id": 1,
       "name": "Pancake",
-      "description": "",
+      "description": "Pancakes are amazing!",
       "imageUrl": "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/pancake.jpeg?raw=true"
     },
     {
+      "id": 2,
       "name": "Popcorn",
-      "description": "",
+      "description": "Pop your cornz",
       "imageUrl": "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/popcorn.jpeg?raw=true"
     }
   ]

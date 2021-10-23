@@ -9,7 +9,7 @@ const AppNavigator = (): JSX.Element => {
 
   return (
     <NavigationContainer>
-      <Navigator>
+      <Navigator screenOptions={{ headerShown: false }}>
         <Screen name="Dashboard" component={DashboardScreen} />
       </Navigator>
     </NavigationContainer>

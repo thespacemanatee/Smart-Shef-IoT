@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Avatar, Button, Card, Paragraph, Title } from "react-native-paper";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
-import RecipeCard from "../components/ui/RecipeCard";
 
+import { useAppSelector } from "../app/hooks";
+import RecipeCard from "../components/ui/RecipeCard";
 import MQTTWrapper from "../config/mqtt";
 
 const DashboardScreen = () => {
+  const recipes = useAppSelector(state => state.recipe.recipes);
   const [mqttClient, setMqttClient] = useState<IMqttClient>();
 
   useEffect(() => {
@@ -20,13 +21,25 @@ const DashboardScreen = () => {
   }, []);
 
   return (
-    <View style={{}}>
-      <Text>Smart Shef</Text>
-      <RecipeCard />
+    <View style={{ flexGrow: 1, backgroundColor: "white" }}>
+      <Text style={{ fontSize: 20 }}>Smart Shef</Text>
+      <ScrollView contentContainerStyle={{ padding: 16 }}>
+        {recipes.map(recipe => {
+          return (
+            <View style={styles.cardContainer}>
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
 
 export default DashboardScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  cardContainer: {
+    marginBottom: 16,
+  },
+});
