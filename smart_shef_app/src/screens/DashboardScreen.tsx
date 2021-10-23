@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 import Animated, {
   Extrapolate,
@@ -13,10 +13,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Modal, Portal } from "react-native-paper";
 
 import { useAppSelector } from "../app/hooks";
-import Title from "../components/elements/Title";
+import Title from "../components/typography/Title";
 import RecipeCard from "../components/ui/RecipeCard";
 import MQTTWrapper from "../config/mqtt";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
+import DebugModal from "../components/ui/DebugModal";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
@@ -61,7 +62,7 @@ const DashboardScreen = () => {
           visible={visible}
           onDismiss={hideModal}
           contentContainerStyle={styles.modalContainer}>
-          <Text>{`${JSON.stringify(mqttClient)}`}</Text>
+          <DebugModal client={mqttClient} />
         </Modal>
       </Portal>
       <Animated.View style={styles.titleContainer}>

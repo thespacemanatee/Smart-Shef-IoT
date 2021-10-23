@@ -4,8 +4,8 @@ import { Card } from "react-native-paper";
 
 import { SPACING } from "../../resources/dimens";
 import { Recipe } from "../../types";
-import Paragraph from "../elements/Paragraph";
-import Title from "../elements/Title";
+import Paragraph from "../typography/Paragraph";
+import Title from "../typography/Title";
 
 interface RecipeCardProps {
   recipe: Recipe;
