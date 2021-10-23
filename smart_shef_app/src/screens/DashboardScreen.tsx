@@ -23,7 +23,9 @@ const DashboardScreen = () => {
       <Text>Smart Shef</Text>
       <Card>
         <Card.Cover
-          source={{ uri: "src/assets/images/pancake.jpeg" }}
+          source={{
+            uri: "https://github.com/thespacemanatee/Smart-Shef-IoT/blob/main/smart_shef_app/assets/images/pancake.jpeg?raw=true",
+          }}
           width={100}
           height={100}
         />
