@@ -9,12 +9,17 @@ import Title from "../typography/Title";
 
 interface RecipeCardProps {
   recipe: Recipe;
+  onPress: (recipe: Recipe) => void;
 }
 
-const RecipeCard = ({ recipe }: RecipeCardProps): JSX.Element => {
+const RecipeCard = ({ recipe, onPress }: RecipeCardProps): JSX.Element => {
   return (
     <Card style={styles.card}>
-      <TouchableNativeFeedback onPress={() => {}} useForeground>
+      <TouchableNativeFeedback
+        onPress={() => {
+          onPress(recipe);
+        }}
+        useForeground>
         <View>
           <Card.Cover
             source={{

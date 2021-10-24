@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 import Animated, {
   Extrapolate,
@@ -10,13 +10,17 @@ import Animated, {
 } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Modal, Portal } from "react-native-paper";
+import BottomSheet from "@gorhom/bottom-sheet";
 
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Title from "../components/typography/Title";
 import RecipeCard from "../components/ui/RecipeCard";
 import MQTTWrapper from "../config/mqtt";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
 import DebugModal from "../components/ui/DebugModal";
+import { Recipe } from "../types";
+import { setSelectedRecipe } from "../features/recipe/recipeSlice";
+import RecipeModalSheet from "../components/ui/RecipeModalSheet";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
@@ -24,7 +28,10 @@ const DashboardScreen = () => {
   const recipes = useAppSelector(state => state.recipe.recipes);
   const [visible, setVisible] = useState(false);
   const [mqttClient, setMqttClient] = useState<IMqttClient>();
+  const sheetRef = useRef<BottomSheet>(null);
   const scrollOffset = useSharedValue(0);
+
+  const dispatch = useAppDispatch();
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -54,6 +61,11 @@ const DashboardScreen = () => {
     };
   });
 
+  const handleOpenRecipeSheet = (recipe: Recipe) => {
+    dispatch(setSelectedRecipe(recipe));
+    sheetRef.current?.expand();
+  };
+
   return (
     <View style={styles.screen}>
       <Portal>
@@ -78,11 +90,12 @@ const DashboardScreen = () => {
         {recipes.map(recipe => {
           return (
             <View key={recipe.id} style={styles.cardContainer}>
-              <RecipeCard recipe={recipe} />
+              <RecipeCard recipe={recipe} onPress={handleOpenRecipeSheet} />
             </View>
           );
         })}
       </Animated.ScrollView>
+      <RecipeModalSheet sheetRef={sheetRef} />
     </View>
   );
 };
