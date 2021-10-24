@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -7,7 +7,7 @@ import {
   TouchableNativeFeedback,
   View,
 } from "react-native";
-import { Device } from "react-native-ble-plx";
+import { Device, Subscription } from "react-native-ble-plx";
 import { ActivityIndicator, Modal, Portal } from "react-native-paper";
 import { decode as btoa } from "base-64";
 
@@ -33,6 +33,7 @@ const BluetoothModal = ({
   loading,
 }: BluetoothModalProps) => {
   const devices = useAppSelector(state => state.settings.devices);
+  const [subscription, setSubscription] = useState<Subscription>();
 
   const dispatch = useAppDispatch();
 
@@ -46,15 +47,25 @@ const BluetoothModal = ({
       dispatch(setSelectedDeviceUUID(connectedDevice.id));
 
       Alert.alert("Connected", `Device ${device.id} connected`);
-      device.onDisconnected(() => {
-        dispatch(removeSelectedDeviceUUID());
-        Alert.alert("Disconnected", "Device was disconnected");
-      });
+      onDismiss();
+
+      setSubscription(
+        device.onDisconnected(() => {
+          dispatch(removeSelectedDeviceUUID());
+          Alert.alert("Disconnected", "Device was disconnected");
+        }),
+      );
     } catch (err) {
       console.error(err);
       Alert.alert("Error", "Could not connect to selected device");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      subscription?.remove();
+    };
+  }, [subscription]);
 
   const renderDevices = ({ item }: { item: Device }) => {
     return (

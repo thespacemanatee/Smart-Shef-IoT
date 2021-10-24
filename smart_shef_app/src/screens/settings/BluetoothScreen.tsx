@@ -13,7 +13,7 @@ import {
 import { Device } from "react-native-ble-plx";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import CTAButton from "../../components/elements/CTAButton";
 import Paragraph from "../../components/typography/Paragraph";
 import BluetoothModal from "../../components/ui/BluetoothModal";
@@ -62,6 +62,14 @@ const BluetoothScreen = () => {
     deviceSpin();
   };
 
+  const handleDisconnectDevice = async () => {
+    try {
+      await connectedDevice?.cancelConnection();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const showModal = () => setVisible(true);
 
   const handleDismissModal = () => {
@@ -85,7 +93,7 @@ const BluetoothScreen = () => {
       }
     };
     let currentValue: string | null;
-    store.subscribe(() => {
+    const storeUnsubscription = store.subscribe(() => {
       const previousValue = currentValue;
       currentValue = store.getState().settings.selectedDeviceUUID;
       if (previousValue !== currentValue) {
@@ -93,6 +101,9 @@ const BluetoothScreen = () => {
       }
     });
     getDevice();
+    return () => {
+      storeUnsubscription();
+    };
   }, []);
 
   return (
@@ -116,7 +127,7 @@ const BluetoothScreen = () => {
             </TouchableNativeFeedback>
             {deviceExpanded && (
               <View style={styles.detailsContainer}>
-                <BluetoothDeviceDetails device={connectedDevice} />
+                <BluetoothDeviceDetails />
               </View>
             )}
           </ScrollView>
@@ -126,11 +137,18 @@ const BluetoothScreen = () => {
           </View>
         )}
       </View>
-      <View style={styles.searchButton}>
+      <View style={styles.searchButtonContainer}>
         <CTAButton
           label="Search"
           onPress={handleScanDevices}
           disabled={bluetoothLoading}
+          style={styles.button}
+        />
+        <CTAButton
+          label="Disconnect"
+          onPress={handleDisconnectDevice}
+          disabled={connectedDevice ? false : true}
+          style={styles.button}
         />
       </View>
     </View>
@@ -144,8 +162,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  searchButton: {
+  searchButtonContainer: {
     padding: SPACING.spacing_16,
+    flexDirection: "row",
+  },
+  button: {
+    marginHorizontal: SPACING.spacing_4,
   },
   detailsTitle: {
     flexDirection: "row",
