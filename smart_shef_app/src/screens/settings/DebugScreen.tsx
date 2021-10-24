@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { IMqttClient } from "sp-react-native-mqtt";
 
-import { FONT_SIZE } from "../../resources/dimens";
-import Paragraph from "../typography/Paragraph";
-import SmallHeading from "../typography/SmallHeading";
-import Title from "../typography/Title";
+import Paragraph from "../../components/typography/Paragraph";
+import SmallHeading from "../../components/typography/SmallHeading";
+import Title from "../../components/typography/Title";
+import { SPACING } from "../../resources/dimens";
 
 interface DebugEntryProps {
   entry: string;
@@ -25,11 +25,13 @@ const DebugEntry = ({ entry, value }: DebugEntryProps): JSX.Element => {
   );
 };
 
-const DebugModal = ({ client }: DebugModalProps): JSX.Element => {
+const DebugScreen = ({ client }: DebugModalProps): JSX.Element => {
   console.log(client);
   return (
     <View style={styles.screen}>
-      <Title>Debug</Title>
+      <View style={styles.titleContainer}>
+        <Title>Debug</Title>
+      </View>
       <DebugEntry entry="Client Ref" value={client?.clientRef} />
       <DebugEntry entry="Client ID" value={client?.options.clientId} />
       <DebugEntry entry="Host" value={client?.options.host} />
@@ -40,17 +42,22 @@ const DebugModal = ({ client }: DebugModalProps): JSX.Element => {
   );
 };
 
-DebugModal.defaultProps = {
+DebugScreen.defaultProps = {
   client: null,
 };
 
-export default DebugModal;
+export default DebugScreen;
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
   entryContainer: {
+    justifyContent: "space-between",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    padding: SPACING.spacing_16,
     justifyContent: "space-between",
   },
 });

@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Button,
-  StyleSheet,
-  TouchableNativeFeedback,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
@@ -30,7 +25,12 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
   const mqttClient = useMQTTClient();
 
   const handleStartCooking = () => {
-    mqttClient?.publish("smartshef/1", "Start cooking!", 1, true);
+    mqttClient?.publish(
+      "smartshef/1",
+      `Start cooking ${selectedRecipe?.name}!`,
+      1,
+      true,
+    );
   };
 
   const handleClose = () => {

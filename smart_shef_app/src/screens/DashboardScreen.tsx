@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Animated, {
   Extrapolate,
@@ -8,32 +8,28 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Modal, Portal } from "react-native-paper";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { StackScreenProps } from "@react-navigation/stack";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Title from "../components/typography/Title";
 import RecipeCard from "../components/ui/RecipeCard";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
-import DebugModal from "../components/ui/DebugModal";
 import { Recipe } from "../types";
 import { setSelectedRecipe } from "../features/recipe/recipeSlice";
 import RecipeModalSheet from "../components/ui/RecipeModalSheet";
-import useMQTTClient from "../utils/hooks/useMQTTClient";
+import { RootStackParamList } from "../navigation";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
-const DashboardScreen = () => {
+type DashboardScreenProps = StackScreenProps<RootStackParamList, "Dashboard">;
+
+const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   const recipes = useAppSelector(state => state.recipe.recipes);
-  const [visible, setVisible] = useState(false);
   const sheetRef = useRef<BottomSheet>(null);
   const scrollOffset = useSharedValue(0);
 
   const dispatch = useAppDispatch();
-  const mqttClient = useMQTTClient();
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
     scrollOffset.value = event.contentOffset.y;
@@ -57,21 +53,10 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={styles.modalContainer}>
-          <DebugModal client={mqttClient} />
-        </Modal>
-      </Portal>
       <Animated.View style={styles.titleContainer}>
         <Title style={[styles.titleText, titleTextAnimatedStyle]}>
           My Recipes
         </Title>
-        <TouchableOpacity onPress={showModal}>
-          <Icon name="bug" size={30} />
-        </TouchableOpacity>
       </Animated.View>
       <Animated.ScrollView
         onScroll={scrollHandler}
@@ -97,13 +82,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     backgroundColor: "white",
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "white",
-    margin: SPACING.spacing_32,
-    borderRadius: SPACING.spacing_8,
-    padding: SPACING.spacing_16,
   },
   titleContainer: {
     flexDirection: "row",
