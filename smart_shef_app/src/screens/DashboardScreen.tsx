@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { IMqttClient } from "sp-react-native-mqtt";
 import Animated, {
   Extrapolate,
   interpolate,
@@ -15,36 +14,26 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Title from "../components/typography/Title";
 import RecipeCard from "../components/ui/RecipeCard";
-import MQTTWrapper from "../config/mqtt";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
 import DebugModal from "../components/ui/DebugModal";
 import { Recipe } from "../types";
 import { setSelectedRecipe } from "../features/recipe/recipeSlice";
 import RecipeModalSheet from "../components/ui/RecipeModalSheet";
+import useMQTTClient from "../utils/hooks/useMQTTClient";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
 const DashboardScreen = () => {
   const recipes = useAppSelector(state => state.recipe.recipes);
   const [visible, setVisible] = useState(false);
-  const [mqttClient, setMqttClient] = useState<IMqttClient>();
   const sheetRef = useRef<BottomSheet>(null);
   const scrollOffset = useSharedValue(0);
 
   const dispatch = useAppDispatch();
+  const mqttClient = useMQTTClient();
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-
-  useEffect(() => {
-    const getMQTTClient = async () => {
-      const client = await MQTTWrapper.getClientInstanceAsync();
-      client.publish("smartshef/1", "Hello, world!!", 1, true);
-
-      setMqttClient(client);
-    };
-    getMQTTClient();
-  }, []);
 
   const scrollHandler = useAnimatedScrollHandler(event => {
     scrollOffset.value = event.contentOffset.y;

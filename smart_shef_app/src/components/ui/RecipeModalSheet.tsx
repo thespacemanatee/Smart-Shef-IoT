@@ -17,6 +17,7 @@ import { SPACING } from "../../resources/dimens";
 import SmallHeading from "../typography/SmallHeading";
 import Paragraph from "../typography/Paragraph";
 import CTAButton from "../elements/CTAButton";
+import useMQTTClient from "../../utils/hooks/useMQTTClient";
 
 interface RecipeModalSheetProps {
   sheetRef: React.RefObject<BottomSheet>;
@@ -26,6 +27,11 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
 
   const dispatch = useAppDispatch();
+  const mqttClient = useMQTTClient();
+
+  const handleStartCooking = () => {
+    mqttClient?.publish("smartshef/1", "Start cooking!", 1, true);
+  };
 
   const handleClose = () => {
     dispatch(resetSelectedRecipe());
@@ -55,7 +61,7 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
           <SmallHeading>Cooking Time</SmallHeading>
           <Paragraph>TBD</Paragraph>
         </View>
-        <CTAButton label="Start Cooking" onPress={() => {}} />
+        <CTAButton label="Start Cooking" onPress={handleStartCooking} />
       </BottomSheetView>
     </BottomSheet>
   );
