@@ -5,7 +5,7 @@ import type { RootState } from "../../app/store";
 import { Recipe } from "../../types";
 
 interface RecipeState {
-  selectedRecipe: Recipe | null;
+  selectedRecipe?: Recipe | null;
   recipes: Recipe[];
 }
 

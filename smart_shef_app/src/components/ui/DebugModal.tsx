@@ -4,6 +4,7 @@ import { IMqttClient } from "sp-react-native-mqtt";
 
 import { FONT_SIZE } from "../../resources/dimens";
 import Paragraph from "../typography/Paragraph";
+import SmallHeading from "../typography/SmallHeading";
 import Title from "../typography/Title";
 
 interface DebugEntryProps {
@@ -18,7 +19,7 @@ interface DebugModalProps {
 const DebugEntry = ({ entry, value }: DebugEntryProps): JSX.Element => {
   return (
     <View style={styles.entryContainer}>
-      <Paragraph style={styles.entryText}>{`${entry}:`}</Paragraph>
+      <SmallHeading>{`${entry}:`}</SmallHeading>
       <Paragraph>{value}</Paragraph>
     </View>
   );
@@ -51,9 +52,5 @@ const styles = StyleSheet.create({
   },
   entryContainer: {
     justifyContent: "space-between",
-  },
-  entryText: {
-    fontFamily: "Poppins-Light",
-    fontSize: FONT_SIZE.small,
   },
 });
