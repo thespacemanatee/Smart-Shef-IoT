@@ -36,7 +36,7 @@ const BluetoothScreen = () => {
     state => state.settings.selectedDeviceUUID,
   );
   const [visible, setVisible] = useState(false);
-  const [connectedDevice, setConnectedDevice] = useState<Device>();
+  const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [deviceExpanded, setDeviceExpanded] = useState(false);
   const deviceSpinValue = useRef(new Animated.Value(0)).current;
 
@@ -83,6 +83,7 @@ const BluetoothScreen = () => {
         setConnectedDevice(device);
       } else {
         dispatch(removeSelectedDeviceUUID());
+        setConnectedDevice(null);
       }
     };
     getDevice();
@@ -101,7 +102,8 @@ const BluetoothScreen = () => {
             <TouchableNativeFeedback onPress={handlePressDeviceInfo}>
               <View style={styles.detailsTitle}>
                 <Title>Device Info</Title>
-                <Animated.View style={{ transform: [{ rotate: deviceRotate }] }}>
+                <Animated.View
+                  style={{ transform: [{ rotate: deviceRotate }] }}>
                   <Icon name="chevron-down" size={30} />
                 </Animated.View>
               </View>
