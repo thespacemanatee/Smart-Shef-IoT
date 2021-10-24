@@ -1,11 +1,28 @@
 import React, { createRef } from "react";
-import { BleManager, Characteristic } from "react-native-ble-plx";
+import { BleManager, Characteristic, Device } from "react-native-ble-plx";
 import { decode as btoa } from "base-64";
 
 export const isReadyRef: React.MutableRefObject<boolean | null> = createRef();
 
 export const bleManagerRef: React.MutableRefObject<BleManager | null> =
   createRef();
+
+export const getConnectedDevice = async (
+  deviceUUID: string | null,
+): Promise<Device | null> => {
+  try {
+    if (!deviceUUID) {
+      return null;
+    }
+    const device = await bleManagerRef.current?.devices([deviceUUID]);
+    if (device && device.length > 0) {
+      return device[0];
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
+};
 
 export const decodeBleString = (value: string | undefined | null): string => {
   if (!value) {

@@ -1,24 +1,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import Paragraph from "../../components/typography/Paragraph";
-import SmallHeading from "../../components/typography/SmallHeading";
+import DebugEntry from "../../components/elements/DebugEntry";
 import { SPACING } from "../../resources/dimens";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
-
-interface DebugEntryProps {
-  entry: string;
-  value: string;
-}
-
-const DebugEntry = ({ entry, value }: DebugEntryProps): JSX.Element => {
-  return (
-    <View style={styles.entryContainer}>
-      <SmallHeading>{`${entry}:`}</SmallHeading>
-      <Paragraph>{value}</Paragraph>
-    </View>
-  );
-};
 
 const DebugScreen = (): JSX.Element => {
   const client = useMQTTClient();
@@ -48,9 +33,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
-  },
-  entryContainer: {
-    justifyContent: "space-between",
   },
   debugInfoContainer: {
     padding: SPACING.spacing_16,

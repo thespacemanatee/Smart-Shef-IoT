@@ -7,7 +7,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { StackScreenProps } from "@react-navigation/stack";
 

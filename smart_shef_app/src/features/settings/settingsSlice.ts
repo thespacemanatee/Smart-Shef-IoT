@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Device } from "react-native-ble-plx";
 
 interface SettingsState {
-  selectedDeviceUUID: string;
+  selectedDeviceUUID: string | null;
   devices: Device[];
 }
 
 const initialState: SettingsState = {
-  selectedDeviceUUID: "",
+  selectedDeviceUUID: null,
   devices: [],
 };
 export const settingsSlice = createSlice({
@@ -23,6 +23,9 @@ export const settingsSlice = createSlice({
     setSelectedDeviceUUID: (state, action: PayloadAction<string>) => {
       state.selectedDeviceUUID = action.payload;
     },
+    removeSelectedDeviceUUID: state => {
+      state.selectedDeviceUUID = null;
+    },
     removeDevice: (state, action: PayloadAction<Device>) => {
       state.devices = state.devices.filter(e => e !== action.payload);
     },
@@ -32,7 +35,12 @@ export const settingsSlice = createSlice({
   },
 });
 
-export const { addDevice, setSelectedDeviceUUID, removeDevice, resetDevices } =
-  settingsSlice.actions;
+export const {
+  addDevice,
+  setSelectedDeviceUUID,
+  removeSelectedDeviceUUID,
+  removeDevice,
+  resetDevices,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

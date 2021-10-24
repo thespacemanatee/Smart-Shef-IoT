@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from "react";
 import {
+  Alert,
   FlatList,
   StyleSheet,
   TouchableNativeFeedback,
@@ -10,11 +11,15 @@ import { Device } from "react-native-ble-plx";
 import { ActivityIndicator, Modal, Portal } from "react-native-paper";
 import { decode as btoa } from "base-64";
 
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SPACING } from "../../resources/dimens";
 import Paragraph from "../typography/Paragraph";
 import Title from "../typography/Title";
 import ItemSeperatorComponent from "../elements/ItemSeperatorComponent";
+import {
+  removeSelectedDeviceUUID,
+  setSelectedDeviceUUID,
+} from "../../features/settings/settingsSlice";
 
 interface BluetoothModalProps {
   visible: boolean;
@@ -29,18 +34,41 @@ const BluetoothModal = ({
 }: BluetoothModalProps) => {
   const devices = useAppSelector(state => state.settings.devices);
 
+  const dispatch = useAppDispatch();
+
+  const handleConnectDevice = async (device: Device) => {
+    try {
+      if (!(await device.isConnected())) {
+        await device.connect();
+        dispatch(setSelectedDeviceUUID(device.id));
+      }
+
+      Alert.alert("Connected", `Device ${device.id} connected`);
+      device.onDisconnected(() => {
+        dispatch(removeSelectedDeviceUUID());
+        Alert.alert("Disconnected", "Device was disconnected");
+      });
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Could not connect to selected device");
+    }
+  };
+
   const renderDevices = ({ item }: { item: Device }) => {
     return (
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        onPress={() => {
+          handleConnectDevice(item);
+        }}>
         <View style={styles.itemContainer}>
           <Paragraph>{`ID: ${item.id}`}</Paragraph>
           <Paragraph>{`Name: ${item.name}`}</Paragraph>
           <Paragraph>{`RSSI: ${item.rssi}`}</Paragraph>
-          {item.manufacturerData && (
-            <Paragraph>
-              {`Manufacturer: ${btoa(item.manufacturerData)}`}
-            </Paragraph>
-          )}
+          <Paragraph>
+            {`Manufacturer: ${
+              item.manufacturerData && btoa(item.manufacturerData)
+            }`}
+          </Paragraph>
           <Paragraph>{`Service UUIDs: ${item.serviceUUIDs}`}</Paragraph>
         </View>
       </TouchableNativeFeedback>
