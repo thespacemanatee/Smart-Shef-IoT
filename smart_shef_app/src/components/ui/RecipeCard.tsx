@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TouchableNativeFeedback, View } from "react-native";
 import { Card } from "react-native-paper";
 
-import { SPACING } from "../../resources/dimens";
+import { ELEVATION, SPACING } from "../../resources/dimens";
 import { Recipe } from "../../types";
 import Paragraph from "../typography/Paragraph";
 import Title from "../typography/Title";
@@ -43,15 +43,16 @@ export default RecipeCard;
 const styles = StyleSheet.create({
   card: {
     overflow: "hidden",
+    borderRadius: SPACING.spacing_16,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
 
-    elevation: 5,
+    elevation: ELEVATION.elevation_4,
   },
   cardContent: {
     padding: SPACING.spacing_24,

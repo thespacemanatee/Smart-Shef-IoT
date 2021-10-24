@@ -25,7 +25,7 @@ export default CTAButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "blue",
+    backgroundColor: "dodgerblue",
     height: SPACING.spacing_48,
     borderRadius: SPACING.spacing_16,
     overflow: "hidden",

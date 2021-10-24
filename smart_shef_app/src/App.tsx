@@ -1,24 +1,15 @@
 import "react-native-get-random-values";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
 
 import data from "./data/data.json";
 import { store } from "./app/store";
 import AppNavigator from "./navigation/AppNavigator";
 import { setRecipes } from "./features/recipe/recipeSlice";
 
-const App = (): JSX.Element | null => {
-  const [loaded, setLoaded] = useState(false);
-  const loadAssets = async () => {
-    await SplashScreen.preventAutoHideAsync();
-  };
+const App = (): JSX.Element => {
   useEffect(() => {
-    loadAssets().then(() => {
-      setLoaded(true);
-      SplashScreen.hideAsync();
-    });
     store.dispatch(
       setRecipes(
         data.recipes.map(e => {
@@ -32,10 +23,6 @@ const App = (): JSX.Element | null => {
       ),
     );
   });
-
-  if (!loaded) {
-    return null;
-  }
 
   return (
     <SafeAreaView style={styles.container}>

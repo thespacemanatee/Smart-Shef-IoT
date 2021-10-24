@@ -34,6 +34,7 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
   return (
     <BottomSheet
       ref={sheetRef}
+      index={-1}
       snapPoints={["25%", "50%"]}
       enablePanDownToClose
       backdropComponent={props => <BottomSheetBackdrop {...props} />}
