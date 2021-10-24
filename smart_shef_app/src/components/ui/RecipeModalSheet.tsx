@@ -45,13 +45,7 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
       enablePanDownToClose
       backdropComponent={props => <BottomSheetBackdrop {...props} />}
       onClose={handleClose}>
-      <BottomSheetView
-        style={{
-          flex: 1,
-          justifyContent: "space-between",
-          marginHorizontal: SPACING.spacing_16,
-          marginBottom: SPACING.spacing_16,
-        }}>
+      <BottomSheetView style={styles.contentContainer}>
         <View>
           <Title>{selectedRecipe?.name}</Title>
           <SmallHeading>Description</SmallHeading>
@@ -69,4 +63,11 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
 
 export default RecipeModalSheet;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    marginHorizontal: SPACING.spacing_16,
+    marginBottom: SPACING.spacing_16,
+  },
+});
