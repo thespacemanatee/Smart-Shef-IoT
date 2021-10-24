@@ -38,10 +38,12 @@ const BluetoothModal = ({
 
   const handleConnectDevice = async (device: Device) => {
     try {
-      if (!(await device.isConnected())) {
-        await device.connect();
-        dispatch(setSelectedDeviceUUID(device.id));
+      if (await device.isConnected()) {
+        Alert.alert("Error", `Device ${device.id} is already connected`);
+        return;
       }
+      const connectedDevice = await device.connect();
+      dispatch(setSelectedDeviceUUID(connectedDevice.id));
 
       Alert.alert("Connected", `Device ${device.id} connected`);
       device.onDisconnected(() => {

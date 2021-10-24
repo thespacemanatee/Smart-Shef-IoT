@@ -1,51 +1,53 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Device } from "react-native-ble-plx";
 
 import DebugEntry from "../elements/DebugEntry";
+import {
+  decodeBleString,
+  getConnectedDevice,
+  getDeviceInfoCharacteristics,
+} from "../../utils/bluetooth/BleHelper";
 
-interface BluetoothDeviceDetailsProps {
-  device: Device;
-}
+const BluetoothDeviceDetails = () => {
+  const [device, setDevice] = useState<Device | null>();
+  const [modelNumber, setModelNumber] = useState<string | null>();
+  const [serialNumber, setSerialNumber] = useState<string | null>();
+  const [firmwareRevision, setFirmwareRevision] = useState<string | null>();
+  const [manufacturerName, setManufacturerName] = useState<string | null>();
 
-const BluetoothDeviceDetails = ({ device }: BluetoothDeviceDetailsProps) => {
+  const readDeviceInfo = useCallback(async () => {
+    const {
+      modelNumberChar,
+      serialNumberChar,
+      firmwareRevisionChar,
+      manufacturerNameChar,
+    } = await getDeviceInfoCharacteristics();
+    const values = await Promise.all([
+      await getConnectedDevice(),
+      decodeBleString((await modelNumberChar?.read())?.value),
+      decodeBleString((await serialNumberChar?.read())?.value),
+      decodeBleString((await firmwareRevisionChar?.read())?.value),
+      decodeBleString((await manufacturerNameChar?.read())?.value),
+    ]);
+    setDevice(values[0]);
+    setModelNumber(values[1]);
+    setSerialNumber(values[2]);
+    setFirmwareRevision(values[3]);
+    setManufacturerName(values[4]);
+  }, []);
+
+  useEffect(() => {
+    readDeviceInfo();
+  }, []);
+
   return (
     <View>
       <DebugEntry entry="ID" value={device?.id || null} />
-      <DebugEntry
-        entry="Is Connectable"
-        value={device?.isConnectable?.toString() || null}
-      />
-      <DebugEntry entry="Local Name" value={device?.localName || null} />
-      <DebugEntry
-        entry="Manufacturer Data"
-        value={
-          (device?.manufacturerData && btoa(device.manufacturerData)) || null
-        }
-      />
-      <DebugEntry entry="MTU" value={device?.mtu?.toString() || null} />
-      <DebugEntry entry="Name" value={device?.name || null} />
-      <DebugEntry
-        entry="Overflow Service UUIDs"
-        value={device?.overflowServiceUUIDs?.toString() || null}
-      />
-      <DebugEntry entry="RSSI" value={device?.rssi?.toString() || null} />
-      <DebugEntry
-        entry="Service Data"
-        value={JSON.stringify(device?.serviceData) || null}
-      />
-      <DebugEntry
-        entry="Service UUIDs"
-        value={device?.serviceUUIDs?.toString() || null}
-      />
-      <DebugEntry
-        entry="Solicited Service UUIDs"
-        value={device?.solicitedServiceUUIDs?.toString() || null}
-      />
-      <DebugEntry
-        entry="TX Power Level"
-        value={device?.txPowerLevel?.toString() || null}
-      />
+      <DebugEntry entry="Model Number" value={modelNumber || null} />
+      <DebugEntry entry="Serial Number" value={serialNumber || null} />
+      <DebugEntry entry="Firmware Revision" value={firmwareRevision || null} />
+      <DebugEntry entry="Manufacturer Name" value={manufacturerName || null} />
     </View>
   );
 };

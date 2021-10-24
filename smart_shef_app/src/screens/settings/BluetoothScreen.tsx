@@ -23,6 +23,7 @@ import { getConnectedDevice } from "../../utils/bluetooth/BleHelper";
 import BluetoothDeviceDetails from "../../components/ui/BluetoothDeviceDetails";
 import Title from "../../components/typography/Title";
 import useScanDevices from "../../utils/hooks/useScanDevices";
+import { store } from "../../app/store";
 
 if (
   Platform.OS === "android" &&
@@ -32,9 +33,6 @@ if (
 }
 
 const BluetoothScreen = () => {
-  const connectedDeviceUUID = useAppSelector(
-    state => state.settings.selectedDeviceUUID,
-  );
   const [visible, setVisible] = useState(false);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [deviceExpanded, setDeviceExpanded] = useState(false);
@@ -78,7 +76,7 @@ const BluetoothScreen = () => {
 
   useEffect(() => {
     const getDevice = async () => {
-      const device = await getConnectedDevice(connectedDeviceUUID);
+      const device = await getConnectedDevice();
       if (device) {
         setConnectedDevice(device);
       } else {
@@ -86,8 +84,16 @@ const BluetoothScreen = () => {
         setConnectedDevice(null);
       }
     };
+    let currentValue: string | null;
+    store.subscribe(() => {
+      const previousValue = currentValue;
+      currentValue = store.getState().settings.selectedDeviceUUID;
+      if (previousValue !== currentValue) {
+        getDevice();
+      }
+    });
     getDevice();
-  }, [connectedDeviceUUID]);
+  }, []);
 
   return (
     <View style={styles.screen}>
