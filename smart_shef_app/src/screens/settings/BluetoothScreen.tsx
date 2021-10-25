@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  Animated,
   ScrollView,
   StyleSheet,
-  TouchableNativeFeedback,
   View,
 } from "react-native";
 import { Device } from "react-native-ble-plx";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useAppDispatch } from "../../app/hooks";
 import CTAButton from "../../components/elements/CTAButton";
@@ -20,7 +17,6 @@ import {
   getConnectedDevice,
 } from "../../utils/bluetooth/BleHelper";
 import BluetoothDeviceDetails from "../../components/ui/BluetoothDeviceDetails";
-import Title from "../../components/typography/Title";
 import useScanDevices from "../../utils/hooks/useScanDevices";
 import { store } from "../../app/store";
 import BluetoothDebugSectionTitle from "../../components/elements/BluetoothDebugSectionTitle";
@@ -71,8 +67,9 @@ const BluetoothScreen = () => {
         setConnectedDevice(null);
       }
     };
+
     let currentValue: string | null;
-    const storeUnsubscription = store.subscribe(() => {
+    const unsubscribe = store.subscribe(() => {
       const previousValue = currentValue;
       currentValue = store.getState().settings.selectedDeviceUUID;
       if (previousValue !== currentValue) {
@@ -80,9 +77,7 @@ const BluetoothScreen = () => {
       }
     });
     getDevice();
-    return () => {
-      storeUnsubscription();
-    };
+    return () => unsubscribe();
   }, []);
 
   return (
