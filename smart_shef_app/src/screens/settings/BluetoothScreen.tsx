@@ -1,13 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Animated,
-  Easing,
-  LayoutAnimation,
-  Platform,
   ScrollView,
   StyleSheet,
   TouchableNativeFeedback,
-  UIManager,
   View,
 } from "react-native";
 import { Device } from "react-native-ble-plx";
@@ -19,48 +15,25 @@ import Paragraph from "../../components/typography/Paragraph";
 import BluetoothModal from "../../components/ui/BluetoothModal";
 import { removeSelectedDeviceUUID } from "../../features/settings/settingsSlice";
 import { SPACING } from "../../resources/dimens";
-import { getConnectedDevice } from "../../utils/bluetooth/BleHelper";
+import {
+  getBatteryCharacteristics,
+  getConnectedDevice,
+} from "../../utils/bluetooth/BleHelper";
 import BluetoothDeviceDetails from "../../components/ui/BluetoothDeviceDetails";
 import Title from "../../components/typography/Title";
 import useScanDevices from "../../utils/hooks/useScanDevices";
 import { store } from "../../app/store";
-
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+import BluetoothDebugSectionTitle from "../../components/elements/BluetoothDebugSectionTitle";
+import BluetoothTemperatureDetails from "../../components/ui/BluetoothTemperatureDetails.tsx";
 
 const BluetoothScreen = () => {
   const [visible, setVisible] = useState(false);
+  const [batteryLevel, setBatteryLevel] = useState(0);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
-  const [deviceExpanded, setDeviceExpanded] = useState(false);
-  const deviceSpinValue = useRef(new Animated.Value(0)).current;
-
-  const deviceRotate = deviceSpinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
-  });
-
-  const deviceSpin = () => {
-    Animated.timing(deviceSpinValue, {
-      toValue: deviceExpanded ? 0 : 1,
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start();
-  };
 
   const dispatch = useAppDispatch();
 
   const { bluetoothLoading, scanDevices, stopScan } = useScanDevices();
-
-  const handlePressDeviceInfo = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    setDeviceExpanded(!deviceExpanded);
-    deviceSpin();
-  };
 
   const handleDisconnectDevice = async () => {
     try {
@@ -82,11 +55,17 @@ const BluetoothScreen = () => {
     scanDevices();
   };
 
+  const readBatteryCharacteristic = async () => {
+    const batteryChar = await getBatteryCharacteristics();
+    return (await batteryChar?.read())?.value?.charCodeAt(0);
+  };
+
   useEffect(() => {
     const getDevice = async () => {
       const device = await getConnectedDevice();
       if (device) {
         setConnectedDevice(device);
+        setBatteryLevel(await readBatteryCharacteristic());
       } else {
         dispatch(removeSelectedDeviceUUID());
         setConnectedDevice(null);
@@ -116,20 +95,16 @@ const BluetoothScreen = () => {
       <View style={{ flex: 1 }}>
         {connectedDevice ? (
           <ScrollView>
-            <TouchableNativeFeedback onPress={handlePressDeviceInfo}>
-              <View style={styles.detailsTitle}>
-                <Title>Device Info</Title>
-                <Animated.View
-                  style={{ transform: [{ rotate: deviceRotate }] }}>
-                  <Icon name="chevron-down" size={30} />
-                </Animated.View>
-              </View>
-            </TouchableNativeFeedback>
-            {deviceExpanded && (
-              <View style={styles.detailsContainer}>
-                <BluetoothDeviceDetails />
-              </View>
-            )}
+            <BluetoothDebugSectionTitle
+              label={"Device Info"}
+              subtitleComponent={() => (
+                <Paragraph>{`Battery Level: ${batteryLevel}%`}</Paragraph>
+              )}>
+              <BluetoothDeviceDetails />
+            </BluetoothDebugSectionTitle>
+            <BluetoothDebugSectionTitle label={"Temperature"}>
+              <BluetoothTemperatureDetails />
+            </BluetoothDebugSectionTitle>
           </ScrollView>
         ) : (
           <View style={styles.emptyContainer}>
@@ -168,15 +143,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: SPACING.spacing_4,
-  },
-  detailsTitle: {
-    flexDirection: "row",
-    padding: SPACING.spacing_16,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  detailsContainer: {
-    padding: SPACING.spacing_16,
   },
   emptyContainer: {
     flex: 1,

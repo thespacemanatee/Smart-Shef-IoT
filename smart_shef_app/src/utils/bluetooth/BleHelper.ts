@@ -3,8 +3,17 @@ import { BleManager, Characteristic, Device } from "react-native-ble-plx";
 import { decode as btoa } from "base-64";
 import { store } from "../../app/store";
 import {
+  BAROMETER_CONFIG_CHARACTERISTIC_UUID,
+  BAROMETER_DATA_CHARACTERISTIC_UUID,
+  BAROMETER_SERVICE_UUID,
+  BATTERY_LEVEL_CHARACTERISTIC_UUID,
+  BATTERY_SERVICE_UUID,
   DEVICE_INFORMATION_SERVICE_UUID,
   FIRMWARE_REVISION_CHARACTERISTIC_UUID,
+  HUMIDITY_CONFIG_CHARACTERISTIC_UUID,
+  HUMIDITY_DATA_CHARACTERISTIC_UUID,
+  HUMIDITY_NOTIF_CHARACTERISTIC_UUID,
+  HUMIDITY_SERVICE_UUID,
   MANUFACTURER_NAME_CHARACTERISTIC_UUID,
   MODEL_NUMBER_CHARACTERISTIC_UUID,
   SERIAL_NUMBER_CHARACTERISTIC_UUID,
@@ -61,6 +70,37 @@ export const getDeviceInfoCharacteristics = async () => {
     firmwareRevisionChar,
     manufacturerNameChar,
   };
+};
+
+export const getBatteryCharacteristics = async () => {
+  return getCharacteristic(
+    BATTERY_SERVICE_UUID,
+    BATTERY_LEVEL_CHARACTERISTIC_UUID,
+  );
+};
+
+export const getHumidityCharacteristics = async () => {
+  const humidityDataChar = await getCharacteristic(
+    HUMIDITY_SERVICE_UUID,
+    HUMIDITY_DATA_CHARACTERISTIC_UUID,
+  );
+  const humidityConfigChar = await getCharacteristic(
+    HUMIDITY_SERVICE_UUID,
+    HUMIDITY_CONFIG_CHARACTERISTIC_UUID,
+  );
+  return { humidityDataChar, humidityConfigChar };
+};
+
+export const getBarometerCharacteristics = async () => {
+  const barometerDataChar = await getCharacteristic(
+    BAROMETER_SERVICE_UUID,
+    BAROMETER_DATA_CHARACTERISTIC_UUID,
+  );
+  const barometerConfigChar = await getCharacteristic(
+    BAROMETER_SERVICE_UUID,
+    BAROMETER_CONFIG_CHARACTERISTIC_UUID,
+  );
+  return { barometerDataChar, barometerConfigChar };
 };
 
 const getCharacteristic = async (
