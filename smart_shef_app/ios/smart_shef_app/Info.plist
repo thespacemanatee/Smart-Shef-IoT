@@ -88,5 +88,9 @@
 		<string>Poppins-Thin.ttf</string>
 		<string>Poppins-ThinItalic.ttf</string>
 	</array>
+	<key>NSBluetoothAlwaysUsageDescription </key>
+	<string>We need your permission to use bluetooth.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need your permission to use the microphone.</string>
 </dict>
 </plist>
