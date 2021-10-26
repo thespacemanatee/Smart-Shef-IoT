@@ -12,9 +12,17 @@ const BluetoothDeviceDetails = () => {
   return (
     <View>
       <Paragraph>
-        {`Humidity: ${
-          humidity.charCodeAt(0) + humidity.charCodeAt(1)
-        }, Barometer: ${barometer.charCodeAt(0) + barometer.charCodeAt(1)}`}
+        {`Temperature (HSensor): ${(
+          ((humidity.charCodeAt(0) + humidity.charCodeAt(1) * 256) / 65536) *
+            165 -
+          40
+        ).toFixed(2)}°C`}
+      </Paragraph>
+      <Paragraph>
+        {`Temperature (BSensor): ${(
+          (barometer.charCodeAt(0) + barometer.charCodeAt(1) * 256) /
+          100
+        ).toFixed(2)}°C`}
       </Paragraph>
     </View>
   );

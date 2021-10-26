@@ -19,7 +19,7 @@ import {
 import BluetoothDeviceDetails from "../../components/ui/BluetoothDeviceDetails";
 import useScanDevices from "../../utils/hooks/useScanDevices";
 import { store } from "../../app/store";
-import BluetoothDebugSectionTitle from "../../components/elements/BluetoothDebugSectionTitle";
+import BluetoothDebugSection from "../../components/elements/BluetoothDebugSection";
 import BluetoothTemperatureDetails from "../../components/ui/BluetoothTemperatureDetails.tsx";
 
 const BluetoothScreen = () => {
@@ -90,16 +90,16 @@ const BluetoothScreen = () => {
       <View style={{ flex: 1 }}>
         {connectedDevice ? (
           <ScrollView>
-            <BluetoothDebugSectionTitle
+            <BluetoothDebugSection
               label={"Device Info"}
               subtitleComponent={() => (
                 <Paragraph>{`Battery Level: ${batteryLevel}%`}</Paragraph>
               )}>
               <BluetoothDeviceDetails />
-            </BluetoothDebugSectionTitle>
-            <BluetoothDebugSectionTitle label={"Temperature"}>
+            </BluetoothDebugSection>
+            <BluetoothDebugSection label={"Temperature"}>
               <BluetoothTemperatureDetails />
-            </BluetoothDebugSectionTitle>
+            </BluetoothDebugSection>
           </ScrollView>
         ) : (
           <View style={styles.emptyContainer}>

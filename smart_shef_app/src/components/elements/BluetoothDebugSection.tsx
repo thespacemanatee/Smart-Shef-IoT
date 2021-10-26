@@ -2,11 +2,8 @@ import React, { useRef, useState } from "react";
 import {
   Animated,
   Easing,
-  LayoutAnimation,
-  Platform,
   StyleSheet,
   TouchableNativeFeedback,
-  UIManager,
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -14,19 +11,12 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { SPACING } from "../../resources/dimens";
 import Title from "../typography/Title";
 
-if (
-  Platform.OS === "android" &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
-interface BluetoothDebugSectionTitleProps {
+interface BluetoothDebugSectionTitle {
   label: string;
   subtitleComponent?: () => Element;
 }
 
-const BluetoothDebugSectionTitle: React.FC<BluetoothDebugSectionTitleProps> = ({
+const BluetoothDebugSection: React.FC<BluetoothDebugSectionTitle> = ({
   label,
   subtitleComponent,
   children,
@@ -49,7 +39,6 @@ const BluetoothDebugSectionTitle: React.FC<BluetoothDebugSectionTitleProps> = ({
   };
 
   const handlePressLabel = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setExpanded(!expanded);
     spin();
   };
@@ -72,11 +61,11 @@ const BluetoothDebugSectionTitle: React.FC<BluetoothDebugSectionTitleProps> = ({
   );
 };
 
-BluetoothDebugSectionTitle.defaultProps = {
-  subtitleComponent: null,
+BluetoothDebugSection.defaultProps = {
+  subtitleComponent: undefined,
 };
 
-export default BluetoothDebugSectionTitle;
+export default BluetoothDebugSection;
 
 const styles = StyleSheet.create({
   detailsTitle: {
