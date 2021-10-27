@@ -1,8 +1,12 @@
 import React from "react";
 import { View } from "react-native";
-import useMonitorBarometerCharacteristic from "../../utils/hooks/useMonitorBarometerCharacteristic";
 
+import useMonitorBarometerCharacteristic from "../../utils/hooks/useMonitorBarometerCharacteristic";
 import useMonitorHumidityCharacteristic from "../../utils/hooks/useMonitorHumidityCharacteristic";
+import {
+  getTemperatureFromBarometer,
+  getTemperatureFromHumidity,
+} from "../../utils/utils";
 import Paragraph from "../typography/Paragraph";
 
 const BluetoothDeviceDetails = () => {
@@ -12,16 +16,13 @@ const BluetoothDeviceDetails = () => {
   return (
     <View>
       <Paragraph>
-        {`Temperature (HSensor): ${(
-          ((humidity.charCodeAt(0) + humidity.charCodeAt(1) * 256) / 65536) *
-            165 -
-          40
-        ).toFixed(2)}°C`}
+        {`Temperature (HSensor): ${getTemperatureFromHumidity(humidity).toFixed(
+          2,
+        )}°C`}
       </Paragraph>
       <Paragraph>
-        {`Temperature (BSensor): ${(
-          (barometer.charCodeAt(0) + barometer.charCodeAt(1) * 256) /
-          100
+        {`Temperature (BSensor): ${getTemperatureFromBarometer(
+          barometer,
         ).toFixed(2)}°C`}
       </Paragraph>
     </View>

@@ -109,12 +109,16 @@ const getCharacteristic = async (
 ): Promise<Characteristic | null> => {
   const device = await getConnectedDevice();
   if (device) {
-    const services = await (
-      await device.discoverAllServicesAndCharacteristics()
-    ).services();
-    const service = services.find(e => e.uuid === serviceUUID);
-    const characteristics = await service?.characteristics();
-    return characteristics?.find(e => e.uuid === characteristicUUID) || null;
+    try {
+      const services = await (
+        await device.discoverAllServicesAndCharacteristics()
+      ).services();
+      const service = services.find(e => e.uuid === serviceUUID);
+      const characteristics = await service?.characteristics();
+      return characteristics?.find(e => e.uuid === characteristicUUID) || null;
+    } catch (err) {
+      console.error(err);
+    }
   }
   return null;
 };

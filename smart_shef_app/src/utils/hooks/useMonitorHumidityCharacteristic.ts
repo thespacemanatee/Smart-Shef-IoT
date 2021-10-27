@@ -19,7 +19,7 @@ const useMonitorHumidityCharacteristic = () => {
           await getHumidityCharacteristics();
         await humidityConfigChar?.writeWithResponse(ENABLE_DATA_COLLECTION);
 
-        characteristic = humidityDataChar;
+        characteristic = humidityConfigChar;
         subscription = humidityDataChar?.monitor((err, char) => {
           if (err) {
             console.error(JSON.stringify(err));
@@ -34,8 +34,14 @@ const useMonitorHumidityCharacteristic = () => {
     monitor();
 
     return () => {
-      characteristic?.writeWithResponse(DISABLE_DATA_COLLECTION);
-      subscription?.remove();
+      try {
+        (async () => {
+          await characteristic?.writeWithResponse(DISABLE_DATA_COLLECTION);
+          subscription?.remove();
+        })();
+      } catch (err) {
+        console.error(JSON.stringify(err));
+      }
     };
   }, []);
 

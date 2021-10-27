@@ -19,7 +19,7 @@ const useMonitorBarometerCharacteristic = () => {
           await getBarometerCharacteristics();
         await barometerConfigChar?.writeWithResponse(ENABLE_DATA_COLLECTION);
 
-        characteristic = barometerDataChar;
+        characteristic = barometerConfigChar;
         subscription = barometerDataChar?.monitor((err, char) => {
           if (err) {
             console.error(JSON.stringify(err));
@@ -34,8 +34,14 @@ const useMonitorBarometerCharacteristic = () => {
     monitor();
 
     return () => {
-      characteristic?.writeWithResponse(DISABLE_DATA_COLLECTION);
-      subscription?.remove();
+      try {
+        (async () => {
+          await characteristic?.writeWithResponse(DISABLE_DATA_COLLECTION);
+          subscription?.remove();
+        })();
+      } catch (err) {
+        console.error(JSON.stringify(err));
+      }
     };
   }, []);
 
