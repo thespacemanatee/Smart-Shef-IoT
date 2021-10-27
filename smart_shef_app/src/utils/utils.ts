@@ -1,6 +1,5 @@
 import { PermissionsAndroid } from "react-native";
 
-// eslint-disable-next-line import/prefer-default-export
 export const requestLocationPermissions = async (): Promise<boolean> => {
   try {
     const granted = await PermissionsAndroid.check(

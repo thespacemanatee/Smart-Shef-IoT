@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
+  Modal,
   StyleSheet,
   TouchableNativeFeedback,
   View,
 } from "react-native";
 import { Device, Subscription } from "react-native-ble-plx";
-import { ActivityIndicator, Modal, Portal } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { decode as btoa } from "base-64";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -62,9 +63,7 @@ const BluetoothModal = ({
   };
 
   useEffect(() => {
-    return () => {
-      subscription?.remove();
-    };
+    return () => subscription?.remove();
   }, [subscription]);
 
   const renderDevices = ({ item }: { item: Device }) => {
@@ -89,11 +88,12 @@ const BluetoothModal = ({
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={styles.modalContainer}>
+    <Modal
+      animationType="fade"
+      transparent
+      visible={visible}
+      onRequestClose={onDismiss}>
+      <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
         <View style={styles.content}>
           <View style={styles.titleContainer}>
             <Title>Devices</Title>
@@ -114,8 +114,8 @@ const BluetoothModal = ({
             </View>
           )}
         </View>
-      </Modal>
-    </Portal>
+      </View>
+    </Modal>
   );
 };
 
