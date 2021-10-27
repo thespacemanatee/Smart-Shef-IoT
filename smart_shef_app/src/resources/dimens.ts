@@ -38,3 +38,9 @@ export const ELEVATION = {
   elevation_10: 10,
   elevation_12: 12,
 };
+
+export const ICON_SIZE = {
+  icon_24: 24,
+  icon_28: 28,
+  icon_32: 32,
+};

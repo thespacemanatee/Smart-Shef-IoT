@@ -1,3 +1,4 @@
-export type RootStackParamList = {
+export type HomeStackParamList = {
   Dashboard: undefined;
+  EquipmentSetup: undefined;
 };

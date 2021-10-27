@@ -4,24 +4,25 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { resetSelectedRecipe } from "../../features/recipe/recipeSlice";
+import { useAppSelector } from "../../app/hooks";
 import Title from "../typography/Title";
 import { SPACING } from "../../resources/dimens";
 import SmallHeading from "../typography/SmallHeading";
 import Paragraph from "../typography/Paragraph";
 import CTAButton from "../elements/CTAButton";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
+import { HomeStackParamList } from "../../navigation";
 
 interface RecipeModalSheetProps {
   sheetRef: React.RefObject<BottomSheet>;
+  navigation: StackNavigationProp<HomeStackParamList, "Dashboard">;
 }
 
-const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
+const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
 
-  const dispatch = useAppDispatch();
   const mqttClient = useMQTTClient();
 
   const handleStartCooking = () => {
@@ -31,10 +32,8 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
       1,
       false,
     );
-  };
-
-  const handleClose = () => {
-    dispatch(resetSelectedRecipe());
+    navigation.navigate("EquipmentSetup");
+    sheetRef.current?.close();
   };
 
   return (
@@ -43,8 +42,7 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
       index={-1}
       snapPoints={["25%", "50%"]}
       enablePanDownToClose
-      backdropComponent={props => <BottomSheetBackdrop {...props} />}
-      onClose={handleClose}>
+      backdropComponent={props => <BottomSheetBackdrop {...props} />}>
       <BottomSheetView style={styles.contentContainer}>
         <View>
           <Title>{selectedRecipe?.name}</Title>

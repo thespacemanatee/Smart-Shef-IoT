@@ -4,23 +4,25 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import Icons from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { RootStackParamList } from ".";
+import { HomeStackParamList } from ".";
 import DashboardScreen from "../screens/DashboardScreen";
 import DebugScreen from "../screens/settings/DebugScreen";
 import BluetoothScreen from "../screens/settings/BluetoothScreen";
 import Title from "../components/typography/Title";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
+import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
 
 const AppNavigator = (): JSX.Element => {
   const Tab = createMaterialBottomTabNavigator();
 
   const DashboardStackNavigator = () => {
-    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
+    const { Navigator, Screen } = createStackNavigator<HomeStackParamList>();
     return (
       <Navigator screenOptions={{ headerShown: false }}>
         <Screen name="Dashboard" component={DashboardScreen} />
+        <Screen name="EquipmentSetup" component={EquipmentSetupScreen} />
       </Navigator>
     );
   };
@@ -50,7 +52,7 @@ const AppNavigator = (): JSX.Element => {
             tabBarLabel: "Home",
             tabBarColor: "slateblue",
             tabBarIcon: ({ color }) => (
-              <Icons name="home" color={color} size={26} />
+              <Icon name="home" color={color} size={26} />
             ),
           }}
         />
@@ -61,7 +63,7 @@ const AppNavigator = (): JSX.Element => {
             tabBarLabel: "Settings",
             tabBarColor: "steelblue",
             tabBarIcon: ({ color }) => (
-              <Icons name="cog" color={color} size={26} />
+              <Icon name="cog" color={color} size={26} />
             ),
           }}
         />

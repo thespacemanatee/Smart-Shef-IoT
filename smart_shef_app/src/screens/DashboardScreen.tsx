@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   Extrapolate,
   interpolate,
@@ -17,11 +17,11 @@ import { FONT_SIZE, SPACING } from "../resources/dimens";
 import { Recipe } from "../types";
 import { setSelectedRecipe } from "../features/recipe/recipeSlice";
 import RecipeModalSheet from "../components/ui/RecipeModalSheet";
-import { RootStackParamList } from "../navigation";
+import { HomeStackParamList } from "../navigation";
 
 const HEADER_HEIGHT_EXPANDED = 80;
 
-type DashboardScreenProps = StackScreenProps<RootStackParamList, "Dashboard">;
+type DashboardScreenProps = StackScreenProps<HomeStackParamList, "Dashboard">;
 
 const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   const recipes = useAppSelector(state => state.recipe.recipes);
@@ -52,11 +52,11 @@ const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
 
   return (
     <View style={styles.screen}>
-      <Animated.View style={styles.titleContainer}>
+      <View style={styles.titleContainer}>
         <Title style={[styles.titleText, titleTextAnimatedStyle]}>
           My Recipes
         </Title>
-      </Animated.View>
+      </View>
       <Animated.ScrollView
         onScroll={scrollHandler}
         contentContainerStyle={styles.scrollViewContentContainer}
@@ -69,7 +69,7 @@ const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
           );
         })}
       </Animated.ScrollView>
-      <RecipeModalSheet sheetRef={sheetRef} />
+      <RecipeModalSheet sheetRef={sheetRef} navigation={navigation} />
     </View>
   );
 };
@@ -83,10 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   titleContainer: {
-    flexDirection: "row",
     padding: SPACING.spacing_16,
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   titleText: {
     fontSize: FONT_SIZE.title1,
