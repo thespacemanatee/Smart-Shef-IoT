@@ -48,21 +48,19 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
           title="Equipment Setup"
           onPress={navigation.goBack}
         />
-        <View style={styles.imageContainer}>
-          <View style={styles.spacer}>
+        <View style={styles.camera}>
+          <View style={styles.nextHintContainer}>
             <Paragraph>
               Ensure that your SensorTag is turned on and placed near your pan.
             </Paragraph>
           </View>
-          <View style={styles.camera}>
-            <View style={styles.image}>
-              <Image
-                // eslint-disable-next-line global-require
-                source={require("../../assets/images/sensortag.jpeg")}
-                width={CAMERA_WIDTH}
-                height={CAMERA_HEIGHT}
-              />
-            </View>
+          <View style={styles.image}>
+            <Image
+              // eslint-disable-next-line global-require
+              source={require("../../assets/images/sensortag.jpeg")}
+              width={CAMERA_WIDTH}
+              height={CAMERA_HEIGHT}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <CTAButton label="I'm Ready!" onPress={() => {}} />
@@ -79,19 +77,21 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
         onPress={navigation.goBack}
       />
       {hasPermission && focused ? (
-        <View style={styles.cameraContainer}>
-          <View style={styles.spacer} />
-          <Camera style={styles.camera} type={Camera.Constants.Type.back}>
+        <Camera
+          style={styles.camera}
+          type={Camera.Constants.Type.back}
+          ratio="16:9">
+          <View style={{ justifyContent: "space-between", flex: 1 }}>
             <View style={styles.hintContainer}>
               <Paragraph style={styles.hintText}>
                 Ensure that the base of your pan can be seen in the camera.
               </Paragraph>
             </View>
-          </Camera>
-          <View style={styles.buttonContainer}>
-            <CTAButton label="Next" onPress={handlePressNext} />
+            <View style={styles.buttonContainer}>
+              <CTAButton label="Next" onPress={handlePressNext} />
+            </View>
           </View>
-        </View>
+        </Camera>
       ) : (
         <View style={styles.emptyContainer}>
           <Paragraph>Camera permissions not granted</Paragraph>
@@ -108,19 +108,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  spacer: {
-    flex: 1,
-    paddingHorizontal: SPACING.spacing_16,
-  },
-  cameraContainer: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    backgroundColor: "black",
+  nextHintContainer: {
+    margin: SPACING.spacing_16,
+    padding: SPACING.spacing_16,
   },
   camera: {
-    width: CAMERA_WIDTH,
-    height: CAMERA_HEIGHT,
-    alignItems: "center",
+    flex: 1,
   },
   hintContainer: {
     backgroundColor: "rgba(0, 0, 0, 0.54)",
@@ -132,12 +125,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   buttonContainer: {
-    flex: 1,
-    paddingHorizontal: SPACING.spacing_16,
-    justifyContent: "center",
-  },
-  imageContainer: {
-    flex: 1,
+    margin: SPACING.spacing_16,
   },
   image: {
     flex: 1,

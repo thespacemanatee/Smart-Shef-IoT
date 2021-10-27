@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
+    flex: 1,
     marginHorizontal: SPACING.spacing_4,
   },
   emptyContainer: {
