@@ -41,6 +41,10 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
     setNextStep(!nextStep);
   };
 
+  const handlePressReady = () => {
+    navigation.navigate("CookingProgress");
+  };
+
   if (nextStep) {
     return (
       <View style={styles.screen}>
@@ -63,7 +67,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
             />
           </View>
           <View style={styles.buttonContainer}>
-            <CTAButton label="I'm Ready!" onPress={() => {}} />
+            <CTAButton label="I'm Ready!" onPress={handlePressReady} />
           </View>
         </View>
       </View>
@@ -81,7 +85,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
           style={styles.camera}
           type={Camera.Constants.Type.back}
           ratio="16:9">
-          <View style={{ justifyContent: "space-between", flex: 1 }}>
+          <View style={styles.cameraContent}>
             <View style={styles.hintContainer}>
               <Paragraph style={styles.hintText}>
                 Ensure that the base of your pan can be seen in the camera.
@@ -113,6 +117,10 @@ const styles = StyleSheet.create({
     padding: SPACING.spacing_16,
   },
   camera: {
+    flex: 1,
+  },
+  cameraContent: {
+    justifyContent: "space-between",
     flex: 1,
   },
   hintContainer: {

@@ -13,6 +13,7 @@ import BluetoothScreen from "../screens/settings/BluetoothScreen";
 import Title from "../components/typography/Title";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
 import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
+import CookingProgressScreen from "../screens/CookingProgressScreen";
 
 const AppNavigator = (): JSX.Element => {
   const Tab = createMaterialBottomTabNavigator();
@@ -23,6 +24,7 @@ const AppNavigator = (): JSX.Element => {
       <Navigator screenOptions={{ headerShown: false }}>
         <Screen name="Dashboard" component={DashboardScreen} />
         <Screen name="EquipmentSetup" component={EquipmentSetupScreen} />
+        <Screen name="CookingProgress" component={CookingProgressScreen} />
       </Navigator>
     );
   };

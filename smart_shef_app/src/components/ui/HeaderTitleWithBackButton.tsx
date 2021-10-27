@@ -30,7 +30,7 @@ export default HeaderTitleWithBackButton;
 
 const styles = StyleSheet.create({
   titleText: {
-    fontSize: FONT_SIZE.title2,
+    fontSize: FONT_SIZE.title3,
   },
   titleContainer: {
     flexDirection: "row",
