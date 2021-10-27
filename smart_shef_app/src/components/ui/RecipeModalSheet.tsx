@@ -29,7 +29,7 @@ const RecipeModalSheet = ({ sheetRef }: RecipeModalSheetProps) => {
       "smartshef/1",
       `Start cooking ${selectedRecipe?.name}!`,
       1,
-      true,
+      false,
     );
   };
 

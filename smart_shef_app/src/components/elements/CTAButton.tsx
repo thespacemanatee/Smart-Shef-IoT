@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: SPACING.spacing_48,
+    maxHeight: SPACING.spacing_48,
     borderRadius: SPACING.spacing_16,
     overflow: "hidden",
   },

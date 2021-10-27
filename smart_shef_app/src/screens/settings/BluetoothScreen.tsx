@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Device } from "react-native-ble-plx";
 
 import { useAppDispatch } from "../../app/hooks";
@@ -61,7 +57,7 @@ const BluetoothScreen = () => {
       const device = await getConnectedDevice();
       if (device) {
         setConnectedDevice(device);
-        setBatteryLevel(await readBatteryCharacteristic());
+        setBatteryLevel((await readBatteryCharacteristic()) || 0);
       } else {
         dispatch(removeSelectedDeviceUUID());
         setConnectedDevice(null);
