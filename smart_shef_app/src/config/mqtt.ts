@@ -1,5 +1,10 @@
 import MQTT, { IMqttClient } from "sp-react-native-mqtt";
 import { v4 as uuidv4 } from "uuid";
+import {
+  MQTT_ENDPOINT,
+  MQTT_USERNAME,
+  MQTT_PASSWORD,
+} from "react-native-dotenv";
 
 class MQTTWrapper {
   private static instance: MQTTWrapper;
@@ -28,8 +33,11 @@ class MQTTWrapper {
     try {
       const sessionId = uuidv4();
       const client = await MQTT.createClient({
-        uri: "mqtt://broker.hivemq.com:1883",
+        uri: MQTT_ENDPOINT,
         clientId: sessionId,
+        auth: true,
+        user: MQTT_USERNAME,
+        pass: MQTT_PASSWORD,
       });
       client.connect();
       client.on("connect", () => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
+import { useIsFocused } from "@react-navigation/core";
 import { Camera } from "expo-camera";
 
 import { HomeStackParamList } from "../navigation";
@@ -19,6 +20,7 @@ type EquipmentSetupScreenProps = StackScreenProps<
 
 const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   const [hasPermission, setHasPermission] = useState(false);
+  const focused = useIsFocused();
 
   useEffect(() => {
     (async () => {
@@ -35,7 +37,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
         title="Equipment Setup"
         onPress={navigation.goBack}
       />
-      {hasPermission ? (
+      {hasPermission && focused ? (
         <View style={styles.cameraContainer}>
           <View style={styles.spacer} />
           <Camera style={styles.camera} type={Camera.Constants.Type.back}>
