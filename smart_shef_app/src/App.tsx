@@ -1,7 +1,13 @@
 import "react-native-get-random-values";
 
 import React, { useEffect } from "react";
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  UIManager,
+} from "react-native";
 import { BleManager } from "react-native-ble-plx";
 
 import data from "./data/data.json";
@@ -9,6 +15,12 @@ import { store } from "./app/store";
 import AppNavigator from "./navigation/AppNavigator";
 import { setRecipes } from "./features/recipe/recipeSlice";
 import { bleManagerRef } from "./utils/bluetooth/BleHelper";
+
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const App = (): JSX.Element => {
   useEffect(() => {

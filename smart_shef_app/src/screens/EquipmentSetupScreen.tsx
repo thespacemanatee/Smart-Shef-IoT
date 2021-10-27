@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, LayoutAnimation, StyleSheet, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/core";
 import { Camera } from "expo-camera";
@@ -20,6 +20,7 @@ type EquipmentSetupScreenProps = StackScreenProps<
 
 const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   const [hasPermission, setHasPermission] = useState(false);
+  const [nextStep, setNextStep] = useState(false);
   const focused = useIsFocused();
 
   useEffect(() => {
@@ -29,7 +30,21 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
     })();
   }, []);
 
-  const handlePressNext = () => {};
+  const handlePressNext = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    setNextStep(!nextStep);
+  };
+
+  if (nextStep) {
+    return (
+      <View style={styles.screen}>
+        <HeaderTitleWithBackButton
+          title="Equipment Setup"
+          onPress={navigation.goBack}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
