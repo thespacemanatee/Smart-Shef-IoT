@@ -1,16 +1,20 @@
 import * as React from "react";
 import { AppRegistry } from "react-native";
-import { Provider as PaperProvider } from "react-native-paper";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
 
 import { name as appName } from "./app.json";
 import App from "./src/App";
 import { store } from "./src/app/store";
 
+const theme = {
+  ...DefaultTheme,
+};
+
 export default function Main() {
   return (
     <Provider store={store}>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <App />
       </PaperProvider>
     </Provider>
