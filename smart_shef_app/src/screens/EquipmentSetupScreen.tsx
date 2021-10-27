@@ -42,7 +42,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   };
 
   const handlePressReady = () => {
-    navigation.navigate("CookingProgress");
+    navigation.navigate("PancakeCookingProgress");
   };
 
   if (nextStep) {

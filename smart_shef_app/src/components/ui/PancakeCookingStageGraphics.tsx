@@ -3,6 +3,9 @@ import { StyleSheet, View } from "react-native";
 
 import PanWithTemperature from "../elements/PanWithTemperature";
 import OilPan from "../graphics/OilPan";
+import PancakeFlipping from "../graphics/PancakeFlipping";
+import PancakeNoBubbles from "../graphics/PancakesNoBubbles";
+import PancakeWithBubbles from "../graphics/PancakeWithBubbles";
 import Subheading from "../typography/Subheading";
 
 const WIDTH = 246;
@@ -18,17 +21,23 @@ const info = [
   "Time’s Up!",
 ];
 
-const graphic = [<OilPan />, <PanWithTemperature />];
+const graphic = [
+  <OilPan />,
+  <PanWithTemperature />,
+  <PancakeNoBubbles />,
+  <PancakeWithBubbles />,
+  <PancakeFlipping />,
+];
 
 interface CookingStageGraphicsProps {
-  stage: number;
+  step: number;
 }
 
-const CookingStageGraphics = ({ stage }: CookingStageGraphicsProps) => {
+const CookingStageGraphics = ({ step }: CookingStageGraphicsProps) => {
   return (
     <View style={styles.container}>
-      <Subheading style={styles.text}>{info[stage]}</Subheading>
-      <View style={styles.graphicContainer}>{graphic[stage]}</View>
+      <Subheading style={styles.text}>{info[step]}</Subheading>
+      <View style={styles.graphicContainer}>{graphic[step]}</View>
     </View>
   );
 };

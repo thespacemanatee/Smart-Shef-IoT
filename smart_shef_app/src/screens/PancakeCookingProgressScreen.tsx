@@ -4,23 +4,33 @@ import { StyleSheet, View } from "react-native";
 
 import { useAppSelector } from "../app/hooks";
 import CTAButton from "../components/elements/CTAButton";
-import AnimatedCookingProgressBar from "../components/ui/AnimatedCookingProgressBar";
-import CookingStageGraphics from "../components/ui/CookingStageGraphics";
+import AnimatedPancakeCookingProgressBar from "../components/ui/AnimatedPancakeCookingProgressBar";
+import PancakeCookingStageGraphics from "../components/ui/PancakeCookingStageGraphics";
 import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButton";
 import { HomeStackParamList } from "../navigation";
 import { SPACING } from "../resources/dimens";
 
 type CookingProgressScreenProps = StackScreenProps<
   HomeStackParamList,
-  "CookingProgress"
+  "PancakeCookingProgress"
 >;
 
-const CookingProgressScreen = ({ navigation }: CookingProgressScreenProps) => {
+const PancakeCookingProgressScreen = ({
+  navigation,
+}: CookingProgressScreenProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
   const [stage, setStage] = useState(0);
+  const [step, setStep] = useState(0);
+  const [flipped, setFlipped] = useState(false);
 
   const handlePressNext = () => {
-    setStage(stage + 1);
+    if (stage === 3 && !flipped) {
+      setFlipped(!flipped);
+      setStep(step + 1);
+    } else {
+      setStage(stage + 1);
+      setStep(step + 1);
+    }
   };
 
   return (
@@ -31,18 +41,21 @@ const CookingProgressScreen = ({ navigation }: CookingProgressScreenProps) => {
       />
       <View style={styles.contentContainer}>
         <View style={styles.progressBar}>
-          <AnimatedCookingProgressBar stage={stage} />
+          <AnimatedPancakeCookingProgressBar stage={stage} />
         </View>
-        <CookingStageGraphics stage={stage} />
+        <PancakeCookingStageGraphics step={step} />
         <View style={styles.buttonContainer}>
-          <CTAButton label="Next" onPress={handlePressNext} />
+          <CTAButton
+            label={step === 4 ? "Flipped!" : "Next"}
+            onPress={handlePressNext}
+          />
         </View>
       </View>
     </View>
   );
 };
 
-export default CookingProgressScreen;
+export default PancakeCookingProgressScreen;
 
 const styles = StyleSheet.create({
   screen: {
