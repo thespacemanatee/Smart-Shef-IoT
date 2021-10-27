@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, LayoutAnimation, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  LayoutAnimation,
+  StyleSheet,
+  View,
+} from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/core";
 import { Camera } from "expo-camera";
@@ -42,6 +48,26 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
           title="Equipment Setup"
           onPress={navigation.goBack}
         />
+        <View style={styles.imageContainer}>
+          <View style={styles.spacer}>
+            <Paragraph>
+              Ensure that your SensorTag is turned on and placed near your pan.
+            </Paragraph>
+          </View>
+          <View style={styles.camera}>
+            <View style={styles.image}>
+              <Image
+                // eslint-disable-next-line global-require
+                source={require("../../assets/images/sensortag.jpeg")}
+                width={CAMERA_WIDTH}
+                height={CAMERA_HEIGHT}
+              />
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <CTAButton label="I'm Ready!" onPress={() => {}} />
+          </View>
+        </View>
       </View>
     );
   }
@@ -84,6 +110,7 @@ const styles = StyleSheet.create({
   },
   spacer: {
     flex: 1,
+    paddingHorizontal: SPACING.spacing_16,
   },
   cameraContainer: {
     flex: 1,
@@ -93,6 +120,7 @@ const styles = StyleSheet.create({
   camera: {
     width: CAMERA_WIDTH,
     height: CAMERA_HEIGHT,
+    alignItems: "center",
   },
   hintContainer: {
     backgroundColor: "rgba(0, 0, 0, 0.54)",
@@ -107,6 +135,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: SPACING.spacing_16,
     justifyContent: "center",
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   emptyContainer: {
     flex: 1,
