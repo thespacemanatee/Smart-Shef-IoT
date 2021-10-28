@@ -20,7 +20,7 @@ class MQTTWrapper {
 
   private static client: IMqttClient;
 
-  private static status: MQTTStatus;
+  static status: MQTTStatus;
 
   constructor(client: IMqttClient) {
     if (typeof client === "undefined") {
@@ -29,10 +29,6 @@ class MQTTWrapper {
       );
     }
   }
-
-  static getClientConnectionStatus = () => {
-    return this.status;
-  };
 
   static async getClientInstanceAsync() {
     if (MQTTWrapper.instance) {

@@ -12,7 +12,7 @@ import MQTTWrapper, { MQTTStatus } from "../../config/mqtt";
 import { resetLogs } from "../../features/settings/settingsSlice";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 
-const DebugScreen = (): JSX.Element => {
+const ServerScreen = (): JSX.Element => {
   const logs = useAppSelector(state => state.settings.logs);
 
   const client = useMQTTClient();
@@ -25,13 +25,15 @@ const DebugScreen = (): JSX.Element => {
           label="Client Info"
           initialExpanded
           subtitleComponent={() => {
-            const status = MQTTWrapper.getClientConnectionStatus();
             return (
               <Paragraph
                 style={{
-                  color: status === MQTTStatus.CONNECTED ? "green" : "red",
+                  color:
+                    MQTTWrapper.status === MQTTStatus.CONNECTED
+                      ? "green"
+                      : "red",
                 }}>
-                {status}
+                {MQTTWrapper.status}
               </Paragraph>
             );
           }}>
@@ -49,7 +51,7 @@ const DebugScreen = (): JSX.Element => {
                 entry={`${item.timestamp.toLocaleTimeString()}   Topic: ${
                   item.topic
                 }   QoS: ${item.qos}   Retained: ${item.retain}`}
-                value={item.message}
+                value={item.message.slice(0, 38)}
               />
             );
           })}
@@ -59,7 +61,7 @@ const DebugScreen = (): JSX.Element => {
   );
 };
 
-export default DebugScreen;
+export default ServerScreen;
 
 const styles = StyleSheet.create({
   screen: {

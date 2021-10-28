@@ -8,7 +8,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { HomeStackParamList } from ".";
 import DashboardScreen from "../screens/DashboardScreen";
-import DebugScreen from "../screens/settings/DebugScreen";
+import ServerScreen from "../screens/settings/ServerScreen";
 import BluetoothScreen from "../screens/settings/BluetoothScreen";
 import Title from "../components/typography/Title";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
@@ -43,7 +43,7 @@ const AppNavigator = (): JSX.Element => {
           screenOptions={{
             tabBarLabelStyle: { fontFamily: "Poppins-Regular" },
           }}>
-          <Screen name="Debug" component={DebugScreen} />
+          <Screen name="Server" component={ServerScreen} />
           <Screen name="Bluetooth" component={BluetoothScreen} />
         </Navigator>
       </View>
