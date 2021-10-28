@@ -8,12 +8,19 @@ import {
 import { store } from "../app/store";
 import { addLog } from "../features/settings/settingsSlice";
 
+export enum MQTTStatus {
+  CONNECTED = "Connected",
+  CONNECTING = "Connecting",
+  ERROR = "Connection Error",
+  CLOSED = "Connection Closed",
+}
+
 class MQTTWrapper {
   private static instance: MQTTWrapper;
 
   private static client: IMqttClient;
 
-  private static sessionId: string;
+  private static status: MQTTStatus;
 
   constructor(client: IMqttClient) {
     if (typeof client === "undefined") {
@@ -23,15 +30,16 @@ class MQTTWrapper {
     }
   }
 
-  static getCurrentSessionId() {
-    return this.sessionId;
-  }
+  static getClientConnectionStatus = () => {
+    return this.status;
+  };
 
   static async getClientInstanceAsync() {
     if (MQTTWrapper.instance) {
       return MQTTWrapper.client;
     }
     MQTTWrapper.instance = this;
+    this.status = MQTTStatus.CONNECTING;
     try {
       const sessionId = uuidv4();
       const client = await MQTT.createClient({
@@ -44,6 +52,7 @@ class MQTTWrapper {
       client.connect();
       client.on("connect", () => {
         console.log("Connection established");
+        this.status = MQTTStatus.CONNECTED;
         client.subscribe("smartshef/#", 1);
       });
       client.on("message", msg => {
@@ -59,12 +68,13 @@ class MQTTWrapper {
       });
       client.on("error", err => {
         console.log(`Connection error: ${err}`);
+        this.status = MQTTStatus.ERROR;
       });
       client.on("closed", () => {
         console.log("Connection closed");
+        this.status = MQTTStatus.CLOSED;
       });
       MQTTWrapper.client = client;
-      MQTTWrapper.sessionId = sessionId;
     } catch (err) {
       console.error(err);
     }

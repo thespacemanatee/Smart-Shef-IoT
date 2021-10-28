@@ -48,6 +48,8 @@ module.exports = {
     "react/jsx-closing-bracket-location": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
   },
   settings: {
     "import/resolver": {

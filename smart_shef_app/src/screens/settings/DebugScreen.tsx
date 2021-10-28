@@ -6,7 +6,9 @@ import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import DebugEntry from "../../components/elements/DebugEntry";
 import DebugSection from "../../components/elements/DebugSection";
+import Paragraph from "../../components/typography/Paragraph";
 import MQTTClientDetails from "../../components/ui/debug/MQTTClientDetails";
+import MQTTWrapper, { MQTTStatus } from "../../config/mqtt";
 import { resetLogs } from "../../features/settings/settingsSlice";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 
@@ -19,7 +21,20 @@ const DebugScreen = (): JSX.Element => {
   return (
     <View style={styles.screen}>
       <ScrollView>
-        <DebugSection label="Client Info" initialExpanded>
+        <DebugSection
+          label="Client Info"
+          initialExpanded
+          subtitleComponent={() => {
+            const status = MQTTWrapper.getClientConnectionStatus();
+            return (
+              <Paragraph
+                style={{
+                  color: status === MQTTStatus.CONNECTED ? "green" : "red",
+                }}>
+                {status}
+              </Paragraph>
+            );
+          }}>
           <MQTTClientDetails client={client} />
         </DebugSection>
         <DebugSection
