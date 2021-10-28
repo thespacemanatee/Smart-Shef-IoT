@@ -1,7 +1,8 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Camera } from "expo-camera";
+import { StackScreenProps } from "@react-navigation/stack";
+import { useIsFocused } from "@react-navigation/native";
 
 import { useAppSelector } from "../app/hooks";
 import CTAButton from "../components/elements/CTAButton";
@@ -26,6 +27,7 @@ const PancakeCookingProgressScreen = ({
   const [step, setStep] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
+  const focused = useIsFocused();
   const mqttClient = useMQTTClient();
 
   const handlePressNext = () => {
@@ -55,30 +57,34 @@ const PancakeCookingProgressScreen = ({
     }, 1000);
   }, [takePicture]);
 
-  return (
-    <Camera
-      ref={cameraRef}
-      type={Camera.Constants.Type.back}
-      ratio="16:9"
-      style={styles.screen}>
-      <View style={styles.screen}>
-        <HeaderTitleWithBackButton
-          title={selectedRecipe?.name}
-          onPress={navigation.goBack}
-        />
-        <View style={styles.progressBar}>
-          <AnimatedPancakeCookingProgressBar stage={stage} />
-        </View>
-        <PancakeCookingStageGraphics step={step} />
-        <View style={styles.buttonContainer}>
-          <CTAButton
-            label={step === 4 ? "Flipped!" : "Next"}
-            onPress={handlePressNext}
+  if (focused) {
+    return (
+      <Camera
+        ref={cameraRef}
+        type={Camera.Constants.Type.back}
+        ratio="16:9"
+        style={styles.screen}>
+        <View style={styles.screen}>
+          <HeaderTitleWithBackButton
+            title={selectedRecipe?.name}
+            onPress={navigation.goBack}
           />
+          <View style={styles.progressBar}>
+            <AnimatedPancakeCookingProgressBar stage={stage} />
+          </View>
+          <PancakeCookingStageGraphics step={step} />
+          <View style={styles.buttonContainer}>
+            <CTAButton
+              label={step === 4 ? "Flipped!" : "Next"}
+              onPress={handlePressNext}
+            />
+          </View>
         </View>
-      </View>
-    </Camera>
-  );
+      </Camera>
+    );
+  }
+
+  return null;
 };
 
 export default PancakeCookingProgressScreen;
