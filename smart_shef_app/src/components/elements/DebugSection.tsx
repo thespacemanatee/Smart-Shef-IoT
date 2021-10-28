@@ -46,14 +46,14 @@ const DebugSection: React.FC<DebugSectionTitle> = ({
   };
 
   return (
-    <View>
+    <View style={{ flex: expanded ? 1 : 0 }}>
       <TouchableNativeFeedback onPress={handlePressLabel}>
         <View style={styles.detailsTitle}>
-          <View>
+          <View style={styles.titleContainer}>
             <Title>{label}</Title>
-            {subtitleComponent && subtitleComponent()}
+            {subtitleComponent && expanded && subtitleComponent()}
           </View>
-          <Animated.View style={{ transform: [{ rotate }] }}>
+          <Animated.View style={[styles.icon, { transform: [{ rotate }] }]}>
             <Icon name="chevron-down" size={30} />
           </Animated.View>
         </View>
@@ -71,6 +71,12 @@ DebugSection.defaultProps = {
 export default DebugSection;
 
 const styles = StyleSheet.create({
+  titleContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   detailsTitle: {
     flexDirection: "row",
     padding: SPACING.spacing_16,
@@ -78,6 +84,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailsContainer: {
+    flex: 1,
     paddingHorizontal: SPACING.spacing_16,
+  },
+  icon: {
+    marginStart: SPACING.spacing_16,
   },
 });

@@ -5,6 +5,8 @@ import {
   MQTT_USERNAME,
   MQTT_PASSWORD,
 } from "react-native-dotenv";
+import { store } from "../app/store";
+import { addLog } from "../features/settings/settingsSlice";
 
 class MQTTWrapper {
   private static instance: MQTTWrapper;
@@ -42,9 +44,19 @@ class MQTTWrapper {
       client.connect();
       client.on("connect", () => {
         console.log("Connection established");
+        client.subscribe("smartshef/#", 1);
       });
       client.on("message", msg => {
         console.log(`Message: ${msg.data}`);
+        store.dispatch(
+          addLog({
+            timestamp: new Date(),
+            topic: msg.topic,
+            qos: msg.qos,
+            retain: msg.retain,
+            message: msg.data,
+          }),
+        );
       });
       client.on("error", err => {
         console.log(`Connection error: ${err}`);

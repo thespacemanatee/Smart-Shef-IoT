@@ -2,15 +2,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Device } from "react-native-ble-plx";
 
+export type LogEntry = {
+  timestamp: Date;
+  topic: string;
+  qos: number;
+  retain: boolean;
+  message: string;
+};
 interface SettingsState {
   selectedDeviceUUID: string | null;
   devices: Device[];
+  logs: LogEntry[];
 }
 
 const initialState: SettingsState = {
   selectedDeviceUUID: null,
   devices: [],
+  logs: [],
 };
+
 export const settingsSlice = createSlice({
   name: "settings",
   initialState,
@@ -32,6 +42,12 @@ export const settingsSlice = createSlice({
     resetDevices: state => {
       state.devices = [];
     },
+    addLog: (state, action: PayloadAction<LogEntry>) => {
+      state.logs = [action.payload].concat(state.logs);
+    },
+    resetLogs: state => {
+      state.logs = [];
+    },
   },
 });
 
@@ -41,6 +57,8 @@ export const {
   removeSelectedDeviceUUID,
   removeDevice,
   resetDevices,
+  addLog,
+  resetLogs,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

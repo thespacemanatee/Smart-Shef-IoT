@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Device } from "react-native-ble-plx";
 
-import DebugEntry from "../elements/DebugEntry";
+import DebugEntry from "../../elements/DebugEntry";
 import {
   decodeBleString,
   getConnectedDevice,
   getDeviceInfoCharacteristics,
-} from "../../utils/bluetooth/BleHelper";
+} from "../../../utils/bluetooth/BleHelper";
 
 const BluetoothDeviceDetails = () => {
   const [device, setDevice] = useState<Device | null>();

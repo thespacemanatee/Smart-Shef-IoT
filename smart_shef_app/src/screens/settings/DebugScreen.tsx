@@ -1,29 +1,47 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Button } from "react-native-paper";
 
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import DebugEntry from "../../components/elements/DebugEntry";
 import DebugSection from "../../components/elements/DebugSection";
+import MQTTClientDetails from "../../components/ui/debug/MQTTClientDetails";
+import { resetLogs } from "../../features/settings/settingsSlice";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 
 const DebugScreen = (): JSX.Element => {
+  const logs = useAppSelector(state => state.settings.logs);
+
   const client = useMQTTClient();
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.screen}>
-      <DebugSection label="Client Info" initialExpanded>
-        <DebugEntry entry="Client Ref" value={client?.clientRef} />
-        <DebugEntry entry="Client ID" value={client?.options.clientId} />
-        <DebugEntry entry="Host" value={client?.options.host} />
-        <DebugEntry entry="Port" value={client?.options.port} />
-        <DebugEntry entry="Protocol" value={client?.options.protocol} />
-        <DebugEntry entry="URI" value={client?.options.uri} />
-      </DebugSection>
+      <ScrollView>
+        <DebugSection label="Client Info" initialExpanded>
+          <MQTTClientDetails client={client} />
+        </DebugSection>
+        <DebugSection
+          label="Logs"
+          subtitleComponent={() => (
+            <Button onPress={() => dispatch(resetLogs())}>Clear</Button>
+          )}>
+          {logs.map((item, index) => {
+            return (
+              <DebugEntry
+                key={String(index)}
+                entry={`${item.timestamp.toLocaleTimeString()} Topic: ${
+                  item.topic
+                } QoS: ${item.qos} Retained: ${item.retain}`}
+                value={item.message}
+              />
+            );
+          })}
+        </DebugSection>
+      </ScrollView>
     </View>
   );
-};
-
-DebugScreen.defaultProps = {
-  client: null,
 };
 
 export default DebugScreen;

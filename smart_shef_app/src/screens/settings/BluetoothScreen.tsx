@@ -12,11 +12,11 @@ import {
   getBatteryCharacteristics,
   getConnectedDevice,
 } from "../../utils/bluetooth/BleHelper";
-import BluetoothDeviceDetails from "../../components/ui/BluetoothDeviceDetails";
+import BluetoothDeviceDetails from "../../components/ui/debug/BluetoothDeviceDetails";
 import useScanDevices from "../../utils/hooks/useScanDevices";
 import { store } from "../../app/store";
 import DebugSection from "../../components/elements/DebugSection";
-import BluetoothTemperatureDetails from "../../components/ui/BluetoothTemperatureDetails.tsx";
+import BluetoothTemperatureDetails from "../../components/ui/debug/BluetoothTemperatureDetails.tsx";
 
 const BluetoothScreen = () => {
   const [visible, setVisible] = useState(false);

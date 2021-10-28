@@ -1,13 +1,13 @@
 import React from "react";
 import { View } from "react-native";
 
-import useMonitorBarometerCharacteristic from "../../utils/hooks/useMonitorBarometerCharacteristic";
-import useMonitorHumidityCharacteristic from "../../utils/hooks/useMonitorHumidityCharacteristic";
+import useMonitorBarometerCharacteristic from "../../../utils/hooks/useMonitorBarometerCharacteristic";
+import useMonitorHumidityCharacteristic from "../../../utils/hooks/useMonitorHumidityCharacteristic";
 import {
   getTemperatureFromBarometer,
   getTemperatureFromHumidity,
-} from "../../utils/utils";
-import DebugEntry from "../elements/DebugEntry";
+} from "../../../utils/utils";
+import DebugEntry from "../../elements/DebugEntry";
 
 const BluetoothDeviceDetails = () => {
   const { decodedString: humidity } = useMonitorHumidityCharacteristic();
