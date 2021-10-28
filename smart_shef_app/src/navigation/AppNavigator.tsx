@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { HomeStackParamList } from ".";
@@ -16,7 +16,7 @@ import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
 import PancakeCookingProgressScreen from "../screens/PancakeCookingProgressScreen";
 
 const AppNavigator = (): JSX.Element => {
-  const Tab = createMaterialBottomTabNavigator();
+  const Tab = createBottomTabNavigator();
 
   const DashboardStackNavigator = () => {
     const { Navigator, Screen } = createStackNavigator<HomeStackParamList>();
@@ -39,7 +39,10 @@ const AppNavigator = (): JSX.Element => {
         <View style={styles.settingsTitleContainer}>
           <Title style={styles.settingsTitleText}>Settings</Title>
         </View>
-        <Navigator>
+        <Navigator
+          screenOptions={{
+            tabBarLabelStyle: { fontFamily: "Poppins-Regular" },
+          }}>
           <Screen name="Debug" component={DebugScreen} />
           <Screen name="Bluetooth" component={BluetoothScreen} />
         </Navigator>
@@ -49,13 +52,16 @@ const AppNavigator = (): JSX.Element => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator shifting>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarLabelStyle: { fontFamily: "Poppins-Medium" },
+        }}>
         <Tab.Screen
           name="DashboardStack"
           component={DashboardStackNavigator}
           options={{
             tabBarLabel: "Home",
-            tabBarColor: "slateblue",
             tabBarIcon: ({ color }) => (
               <Icon name="home" color={color} size={26} />
             ),
@@ -66,7 +72,6 @@ const AppNavigator = (): JSX.Element => {
           component={SettingsTopTabNavigator}
           options={{
             tabBarLabel: "Settings",
-            tabBarColor: "steelblue",
             tabBarIcon: ({ color }) => (
               <Icon name="cog" color={color} size={26} />
             ),

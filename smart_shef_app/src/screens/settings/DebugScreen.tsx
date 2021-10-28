@@ -10,7 +10,7 @@ const DebugScreen = (): JSX.Element => {
 
   return (
     <View style={styles.screen}>
-      <DebugSection label="Client Info">
+      <DebugSection label="Client Info" initialExpanded>
         <DebugEntry entry="Client Ref" value={client?.clientRef} />
         <DebugEntry entry="Client ID" value={client?.options.clientId} />
         <DebugEntry entry="Host" value={client?.options.host} />

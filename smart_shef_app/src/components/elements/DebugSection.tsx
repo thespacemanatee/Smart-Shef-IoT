@@ -14,14 +14,16 @@ import Title from "../typography/Title";
 interface DebugSectionTitle {
   label: string;
   subtitleComponent?: () => Element;
+  initialExpanded?: boolean;
 }
 
 const DebugSection: React.FC<DebugSectionTitle> = ({
   label,
   subtitleComponent,
+  initialExpanded,
   children,
 }): JSX.Element => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(initialExpanded);
   const spinValue = useRef(new Animated.Value(0)).current;
 
   const rotate = spinValue.interpolate({
@@ -63,6 +65,7 @@ const DebugSection: React.FC<DebugSectionTitle> = ({
 
 DebugSection.defaultProps = {
   subtitleComponent: undefined,
+  initialExpanded: false,
 };
 
 export default DebugSection;

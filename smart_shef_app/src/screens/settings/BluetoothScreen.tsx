@@ -90,7 +90,8 @@ const BluetoothScreen = () => {
               label="Device Info"
               subtitleComponent={() => (
                 <Paragraph>{`Battery Level: ${batteryLevel}%`}</Paragraph>
-              )}>
+              )}
+              initialExpanded>
               <BluetoothDeviceDetails />
             </DebugSection>
             <DebugSection label="Temperature">

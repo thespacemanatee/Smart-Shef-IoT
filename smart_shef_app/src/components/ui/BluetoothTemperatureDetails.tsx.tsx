@@ -8,7 +8,6 @@ import {
   getTemperatureFromHumidity,
 } from "../../utils/utils";
 import DebugEntry from "../elements/DebugEntry";
-import Paragraph from "../typography/Paragraph";
 
 const BluetoothDeviceDetails = () => {
   const { decodedString: humidity } = useMonitorHumidityCharacteristic();
