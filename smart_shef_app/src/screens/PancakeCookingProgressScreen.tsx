@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Camera } from "expo-camera";
 
 import { useAppSelector } from "../app/hooks";
 import CTAButton from "../components/elements/CTAButton";
@@ -9,6 +10,9 @@ import PancakeCookingStageGraphics from "../components/ui/PancakeCookingStageGra
 import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButton";
 import { HomeStackParamList } from "../navigation";
 import { SPACING } from "../resources/dimens";
+import useMQTTClient from "../utils/hooks/useMQTTClient";
+
+const { width, height } = Dimensions.get("window");
 
 type CookingProgressScreenProps = StackScreenProps<
   HomeStackParamList,
@@ -19,9 +23,12 @@ const PancakeCookingProgressScreen = ({
   navigation,
 }: CookingProgressScreenProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
+  const cameraRef = useRef<Camera>(null);
   const [stage, setStage] = useState(0);
   const [step, setStep] = useState(0);
   const [flipped, setFlipped] = useState(false);
+
+  const mqttClient = useMQTTClient();
 
   const handlePressNext = () => {
     if (stage === 3 && !flipped) {
@@ -33,13 +40,34 @@ const PancakeCookingProgressScreen = ({
     }
   };
 
+  const takePicture = useCallback(async () => {
+    try {
+      const res = await cameraRef.current?.takePictureAsync({ base64: true });
+      if (res?.base64) {
+        mqttClient?.publish("smartshef/image", res.base64, 1, false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [mqttClient]);
+
+  useEffect(() => {
+    setInterval(() => {
+      takePicture();
+    }, 1000);
+  }, [takePicture]);
+
   return (
-    <View style={styles.screen}>
-      <HeaderTitleWithBackButton
-        title={selectedRecipe?.name}
-        onPress={navigation.goBack}
-      />
-      <View style={styles.contentContainer}>
+    <Camera
+      ref={cameraRef}
+      type={Camera.Constants.Type.back}
+      ratio="16:9"
+      style={styles.screen}>
+      <View style={styles.screen}>
+        <HeaderTitleWithBackButton
+          title={selectedRecipe?.name}
+          onPress={navigation.goBack}
+        />
         <View style={styles.progressBar}>
           <AnimatedPancakeCookingProgressBar stage={stage} />
         </View>
@@ -51,7 +79,7 @@ const PancakeCookingProgressScreen = ({
           />
         </View>
       </View>
-    </View>
+    </Camera>
   );
 };
 
@@ -61,10 +89,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: "space-between",
   },
   progressBar: {
     margin: SPACING.spacing_16,

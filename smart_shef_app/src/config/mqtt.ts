@@ -41,7 +41,6 @@ class MQTTWrapper {
       });
       client.connect();
       client.on("connect", () => {
-        client.subscribe("smartshef/1", 1);
         console.log("Connection established");
       });
       client.on("message", msg => {
