@@ -5,14 +5,24 @@ import Animated from "react-native-reanimated";
 import { FONT_SIZE } from "../../resources/dimens";
 
 interface SmallHeadingProps {
+  numberOfLines?: number;
   style?: StyleProp<TextStyle>;
 }
 
-const SmallHeading: React.FC<SmallHeadingProps> = ({ children, style }) => {
-  return <Animated.Text style={[styles.text, style]}>{children}</Animated.Text>;
+const SmallHeading: React.FC<SmallHeadingProps> = ({
+  children,
+  numberOfLines,
+  style,
+}) => {
+  return (
+    <Animated.Text numberOfLines={numberOfLines} style={[styles.text, style]}>
+      {children}
+    </Animated.Text>
+  );
 };
 
 SmallHeading.defaultProps = {
+  numberOfLines: undefined,
   style: undefined,
 };
 
