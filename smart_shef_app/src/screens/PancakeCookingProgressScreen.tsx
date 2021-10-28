@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Camera } from "expo-camera";
 
 import { useAppSelector } from "../app/hooks";
@@ -11,8 +11,6 @@ import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButto
 import { HomeStackParamList } from "../navigation";
 import { SPACING } from "../resources/dimens";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
-
-const { width, height } = Dimensions.get("window");
 
 type CookingProgressScreenProps = StackScreenProps<
   HomeStackParamList,

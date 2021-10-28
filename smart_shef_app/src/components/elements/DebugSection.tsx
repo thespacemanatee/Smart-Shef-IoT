@@ -11,12 +11,12 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { SPACING } from "../../resources/dimens";
 import Title from "../typography/Title";
 
-interface BluetoothDebugSectionTitle {
+interface DebugSectionTitle {
   label: string;
   subtitleComponent?: () => Element;
 }
 
-const BluetoothDebugSection: React.FC<BluetoothDebugSectionTitle> = ({
+const DebugSection: React.FC<DebugSectionTitle> = ({
   label,
   subtitleComponent,
   children,
@@ -61,11 +61,11 @@ const BluetoothDebugSection: React.FC<BluetoothDebugSectionTitle> = ({
   );
 };
 
-BluetoothDebugSection.defaultProps = {
+DebugSection.defaultProps = {
   subtitleComponent: undefined,
 };
 
-export default BluetoothDebugSection;
+export default DebugSection;
 
 const styles = StyleSheet.create({
   detailsTitle: {
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailsContainer: {
-    padding: SPACING.spacing_16,
+    paddingHorizontal: SPACING.spacing_16,
   },
 });

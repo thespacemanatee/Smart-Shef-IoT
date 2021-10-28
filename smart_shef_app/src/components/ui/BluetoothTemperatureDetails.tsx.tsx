@@ -7,6 +7,7 @@ import {
   getTemperatureFromBarometer,
   getTemperatureFromHumidity,
 } from "../../utils/utils";
+import DebugEntry from "../elements/DebugEntry";
 import Paragraph from "../typography/Paragraph";
 
 const BluetoothDeviceDetails = () => {
@@ -15,16 +16,14 @@ const BluetoothDeviceDetails = () => {
 
   return (
     <View>
-      <Paragraph>
-        {`Temperature (HSensor): ${getTemperatureFromHumidity(humidity).toFixed(
-          2,
-        )}°C`}
-      </Paragraph>
-      <Paragraph>
-        {`Temperature (BSensor): ${getTemperatureFromBarometer(
-          barometer,
-        ).toFixed(2)}°C`}
-      </Paragraph>
+      <DebugEntry
+        entry="Temperature (HSensor)"
+        value={`${getTemperatureFromHumidity(humidity).toFixed(2)}°C`}
+      />
+      <DebugEntry
+        entry="Temperature (BSensor)"
+        value={`${getTemperatureFromBarometer(barometer).toFixed(2)}°C`}
+      />
     </View>
   );
 };
