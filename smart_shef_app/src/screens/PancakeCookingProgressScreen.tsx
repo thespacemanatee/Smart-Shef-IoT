@@ -42,7 +42,10 @@ const PancakeCookingProgressScreen = ({
 
   const takePicture = useCallback(async () => {
     try {
-      const res = await cameraRef.current?.takePictureAsync({ base64: true });
+      const res = await cameraRef.current?.takePictureAsync({
+        base64: true,
+        quality: 0.5,
+      });
       if (res?.base64) {
         mqttClient?.publish("smartshef/image", res.base64, 1, false);
       }
@@ -54,7 +57,7 @@ const PancakeCookingProgressScreen = ({
   useEffect(() => {
     setInterval(() => {
       takePicture();
-    }, 1000);
+    }, 2000);
   }, [takePicture]);
 
   if (focused) {

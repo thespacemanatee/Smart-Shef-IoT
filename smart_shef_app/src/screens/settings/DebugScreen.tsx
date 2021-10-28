@@ -31,9 +31,9 @@ const DebugScreen = (): JSX.Element => {
             return (
               <DebugEntry
                 key={String(index)}
-                entry={`${item.timestamp.toLocaleTimeString()} Topic: ${
+                entry={`${item.timestamp.toLocaleTimeString()}   Topic: ${
                   item.topic
-                } QoS: ${item.qos} Retained: ${item.retain}`}
+                }   QoS: ${item.qos}   Retained: ${item.retain}`}
                 value={item.message}
               />
             );

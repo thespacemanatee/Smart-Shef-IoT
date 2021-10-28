@@ -47,7 +47,6 @@ class MQTTWrapper {
         client.subscribe("smartshef/#", 1);
       });
       client.on("message", msg => {
-        console.log(`Message: ${msg.data}`);
         store.dispatch(
           addLog({
             timestamp: new Date(),
