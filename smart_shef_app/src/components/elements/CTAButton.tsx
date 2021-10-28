@@ -29,10 +29,12 @@ const CTAButton = ({
         styles.container,
         { backgroundColor: disabled ? "grey" : "dodgerblue" },
         style,
-      ]}>
+      ]}
+    >
       <TouchableNativeFeedback
         useForeground
-        onPress={disabled ? undefined : onPress}>
+        onPress={disabled ? undefined : onPress}
+      >
         <View style={styles.button}>
           <Paragraph style={styles.labelText}>{label}</Paragraph>
         </View>

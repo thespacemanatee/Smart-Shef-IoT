@@ -42,7 +42,8 @@ const AppNavigator = (): JSX.Element => {
         <Navigator
           screenOptions={{
             tabBarLabelStyle: { fontFamily: "Poppins-Regular" },
-          }}>
+          }}
+        >
           <Screen name="Server" component={ServerScreen} />
           <Screen name="Bluetooth" component={BluetoothScreen} />
         </Navigator>
@@ -56,7 +57,8 @@ const AppNavigator = (): JSX.Element => {
         screenOptions={{
           headerShown: false,
           tabBarLabelStyle: { fontFamily: "Poppins-Medium" },
-        }}>
+        }}
+      >
         <Tab.Screen
           name="DashboardStack"
           component={DashboardStackNavigator}

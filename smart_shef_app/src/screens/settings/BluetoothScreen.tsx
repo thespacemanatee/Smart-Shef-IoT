@@ -83,7 +83,7 @@ const BluetoothScreen = () => {
         onDismiss={handleDismissModal}
         loading={bluetoothLoading}
       />
-      <View style={{ flex: 1 }}>
+      <View style={styles.screen}>
         {connectedDevice ? (
           <ScrollView>
             <DebugSection
@@ -91,7 +91,8 @@ const BluetoothScreen = () => {
               subtitleComponent={() => (
                 <Paragraph>{`Battery Level: ${batteryLevel}%`}</Paragraph>
               )}
-              initialExpanded>
+              initialExpanded
+            >
               <BluetoothDeviceDetails />
             </DebugSection>
             <DebugSection label="Temperature">

@@ -32,18 +32,21 @@ const ServerScreen = (): JSX.Element => {
                     MQTTWrapper.status === MQTTStatus.CONNECTED
                       ? "green"
                       : "red",
-                }}>
+                }}
+              >
                 {MQTTWrapper.status}
               </Paragraph>
             );
-          }}>
+          }}
+        >
           <MQTTClientDetails client={client} />
         </DebugSection>
         <DebugSection
           label="Logs"
           subtitleComponent={() => (
             <Button onPress={() => dispatch(resetLogs())}>Clear</Button>
-          )}>
+          )}
+        >
           {logs.map((item, index) => {
             return (
               <DebugEntry

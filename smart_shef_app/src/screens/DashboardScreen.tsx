@@ -60,7 +60,8 @@ const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
       <Animated.ScrollView
         onScroll={scrollHandler}
         contentContainerStyle={styles.scrollViewContentContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         {recipes.map(recipe => {
           return (
             <View key={recipe.id} style={styles.cardContainer}>

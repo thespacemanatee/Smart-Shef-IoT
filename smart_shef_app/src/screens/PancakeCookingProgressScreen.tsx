@@ -55,9 +55,11 @@ const PancakeCookingProgressScreen = ({
   }, [mqttClient]);
 
   useEffect(() => {
-    setInterval(() => {
+    const job = setInterval(() => {
       takePicture();
     }, 2000);
+
+    return () => clearInterval(job);
   }, [takePicture]);
 
   if (focused) {
@@ -66,7 +68,8 @@ const PancakeCookingProgressScreen = ({
         ref={cameraRef}
         type={Camera.Constants.Type.back}
         ratio="16:9"
-        style={styles.screen}>
+        style={styles.screen}
+      >
         <View style={styles.screen}>
           <HeaderTitleWithBackButton
             title={selectedRecipe?.name}

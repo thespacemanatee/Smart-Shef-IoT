@@ -19,7 +19,8 @@ const RecipeCard = ({ recipe, onPress }: RecipeCardProps): JSX.Element => {
         onPress={() => {
           onPress(recipe);
         }}
-        useForeground>
+        useForeground
+      >
         <View>
           <Card.Cover
             source={{

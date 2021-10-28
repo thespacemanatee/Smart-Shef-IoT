@@ -19,7 +19,8 @@ const PanWithTemperature = () => {
                 ? "#A3CF6B"
                 : "#BCBCBC",
           },
-        ]}>
+        ]}
+      >
         {`${getTemperatureFromHumidity(decodedString).toFixed(0)}°C`}
       </Text>
       <FirePan />

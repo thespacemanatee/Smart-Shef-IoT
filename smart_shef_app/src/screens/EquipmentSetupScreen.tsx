@@ -85,7 +85,8 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
         <Camera
           style={styles.camera}
           type={Camera.Constants.Type.back}
-          ratio="16:9">
+          ratio="16:9"
+        >
           <View style={styles.cameraContent}>
             <View style={styles.hintContainer}>
               <Paragraph style={styles.hintText}>

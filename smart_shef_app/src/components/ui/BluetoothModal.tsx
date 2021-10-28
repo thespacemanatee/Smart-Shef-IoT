@@ -71,7 +71,8 @@ const BluetoothModal = ({
       <TouchableNativeFeedback
         onPress={() => {
           handleConnectDevice(item);
-        }}>
+        }}
+      >
         <View style={styles.itemContainer}>
           <Paragraph>{`ID: ${item.id}`}</Paragraph>
           <Paragraph>{`Name: ${item.name}`}</Paragraph>
@@ -92,7 +93,8 @@ const BluetoothModal = ({
       animationType="fade"
       transparent
       visible={visible}
-      onRequestClose={onDismiss}>
+      onRequestClose={onDismiss}
+    >
       <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
         <View style={styles.content}>
           <View style={styles.titleContainer}>
