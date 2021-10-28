@@ -74,7 +74,7 @@ const BluetoothScreen = () => {
     });
     getDevice();
     return () => unsubscribe();
-  }, []);
+  }, [dispatch]);
 
   return (
     <View style={styles.screen}>
@@ -87,13 +87,13 @@ const BluetoothScreen = () => {
         {connectedDevice ? (
           <ScrollView>
             <BluetoothDebugSection
-              label={"Device Info"}
+              label="Device Info"
               subtitleComponent={() => (
                 <Paragraph>{`Battery Level: ${batteryLevel}%`}</Paragraph>
               )}>
               <BluetoothDeviceDetails />
             </BluetoothDebugSection>
-            <BluetoothDebugSection label={"Temperature"}>
+            <BluetoothDebugSection label="Temperature">
               <BluetoothTemperatureDetails />
             </BluetoothDebugSection>
           </ScrollView>
@@ -113,7 +113,7 @@ const BluetoothScreen = () => {
         <CTAButton
           label="Disconnect"
           onPress={handleDisconnectDevice}
-          disabled={connectedDevice ? false : true}
+          disabled={!connectedDevice}
           style={styles.button}
         />
       </View>

@@ -31,7 +31,7 @@ const AnimatedProgressCircle = ({
     } else {
       progress.value = 0;
     }
-  }, [stage, progress]);
+  }, [index, stage, progress]);
 
   const animatedProps = useAnimatedProps(() => {
     const fill = interpolateColor(progress.value, [0, 1], ["white", "#FF7070"]);

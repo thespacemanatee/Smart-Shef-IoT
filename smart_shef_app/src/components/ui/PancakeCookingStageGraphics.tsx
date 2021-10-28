@@ -29,11 +29,13 @@ const graphic = [
   <PancakeFlipping />,
 ];
 
-interface CookingStageGraphicsProps {
+interface PancakeCookingStageGraphicsProps {
   step: number;
 }
 
-const CookingStageGraphics = ({ step }: CookingStageGraphicsProps) => {
+const PancakeCookingStageGraphics = ({
+  step,
+}: PancakeCookingStageGraphicsProps) => {
   return (
     <View style={styles.container}>
       <Subheading style={styles.text}>{info[step]}</Subheading>
@@ -42,7 +44,7 @@ const CookingStageGraphics = ({ step }: CookingStageGraphicsProps) => {
   );
 };
 
-export default CookingStageGraphics;
+export default PancakeCookingStageGraphics;
 
 const styles = StyleSheet.create({
   container: {

@@ -66,7 +66,7 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4",
+    "eslint-plugin-react-hooks": "^4.2.1-alpha-6c3dcc7a4-20211027",
     "jest": "^27.3.1",
     "metro-react-native-babel-preset": "^0.66.2",
     "patch-package": "^6.4.7",

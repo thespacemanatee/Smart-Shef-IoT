@@ -31,7 +31,7 @@ const AnimatedProgressRect = ({
     } else {
       progress.value = 0;
     }
-  }, [stage, progress]);
+  }, [index, stage, progress]);
 
   const animatedProps = useAnimatedProps(() => {
     const width = interpolate(progress.value, [0, 1], [0, 22]);

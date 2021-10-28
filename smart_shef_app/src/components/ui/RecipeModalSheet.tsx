@@ -42,6 +42,7 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
       index={-1}
       snapPoints={["25%", "50%"]}
       enablePanDownToClose
+      // eslint-disable-next-line react/jsx-props-no-spreading
       backdropComponent={props => <BottomSheetBackdrop {...props} />}>
       <BottomSheetView style={styles.contentContainer}>
         <View>

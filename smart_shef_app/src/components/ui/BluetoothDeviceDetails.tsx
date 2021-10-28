@@ -39,7 +39,7 @@ const BluetoothDeviceDetails = () => {
 
   useEffect(() => {
     readDeviceInfo();
-  }, []);
+  }, [readDeviceInfo]);
 
   return (
     <View>
