@@ -38,7 +38,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   }, []);
 
   const handlePressNext = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setNextStep(!nextStep);
   };
 

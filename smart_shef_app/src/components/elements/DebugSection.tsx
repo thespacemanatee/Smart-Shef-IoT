@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import {
   Animated,
   Easing,
+  LayoutAnimation,
   StyleSheet,
   TouchableNativeFeedback,
   View,
@@ -24,7 +25,7 @@ const DebugSection: React.FC<DebugSectionTitle> = ({
   children,
 }): JSX.Element => {
   const [expanded, setExpanded] = useState(initialExpanded);
-  const spinValue = useRef(new Animated.Value(0)).current;
+  const spinValue = useRef(new Animated.Value(initialExpanded ? 1 : 0)).current;
 
   const rotate = spinValue.interpolate({
     inputRange: [0, 1],
@@ -41,6 +42,7 @@ const DebugSection: React.FC<DebugSectionTitle> = ({
   };
 
   const handlePressLabel = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
     spin();
   };
