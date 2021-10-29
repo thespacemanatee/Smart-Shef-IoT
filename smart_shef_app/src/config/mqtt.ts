@@ -1,4 +1,4 @@
-import MQTT, { IMqttClient } from "sp-react-native-mqtt";
+import MQTT, { IMqttClient } from "tsm-react-native-mqtt";
 import { v4 as uuidv4 } from "uuid";
 import {
   MQTT_ENDPOINT,

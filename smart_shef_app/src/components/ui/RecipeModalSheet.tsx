@@ -31,6 +31,7 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
       `Start cooking ${selectedRecipe?.name}!`,
       1,
       false,
+      false,
     );
     navigation.navigate("EquipmentSetup");
     sheetRef.current?.close();

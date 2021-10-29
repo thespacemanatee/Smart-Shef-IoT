@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IMqttClient } from "sp-react-native-mqtt";
+import { IMqttClient } from "tsm-react-native-mqtt";
 
 import MQTTWrapper from "../../config/mqtt";
 

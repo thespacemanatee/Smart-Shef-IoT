@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView } from "react-native";
-import { IMqttClient } from "sp-react-native-mqtt";
+import { IMqttClient } from "tsm-react-native-mqtt";
 
 import DebugEntry from "../../elements/DebugEntry";
 

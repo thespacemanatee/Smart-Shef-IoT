@@ -47,7 +47,7 @@ const PancakeCookingProgressScreen = ({
         quality: 0.5,
       });
       if (res?.base64) {
-        mqttClient?.publish("smartshef/image", res.base64, 1, false);
+        mqttClient?.publish("smartshef/image", res.base64, 1, false, true);
       }
     } catch (err) {
       console.error(err);
