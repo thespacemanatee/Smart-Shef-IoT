@@ -53,9 +53,7 @@ const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   return (
     <View style={styles.screen}>
       <View style={styles.titleContainer}>
-        <Title style={[styles.titleText, titleTextAnimatedStyle]}>
-          My Recipes
-        </Title>
+        <Title style={titleTextAnimatedStyle}>My Recipes</Title>
       </View>
       <Animated.ScrollView
         onScroll={scrollHandler}
@@ -85,9 +83,6 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     padding: SPACING.spacing_16,
-  },
-  titleText: {
-    fontSize: FONT_SIZE.title1,
   },
   scrollViewContentContainer: {
     paddingHorizontal: SPACING.spacing_16,
