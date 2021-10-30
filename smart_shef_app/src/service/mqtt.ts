@@ -6,7 +6,7 @@ import {
   MQTT_PASSWORD,
 } from "react-native-dotenv";
 import { store } from "../app/store";
-import { addLog } from "../features/settings/settingsSlice";
+import { addLog, setClientStatus } from "../features/settings/settingsSlice";
 
 export enum MQTTStatus {
   CONNECTED = "Connected",
@@ -15,12 +15,10 @@ export enum MQTTStatus {
   CLOSED = "Connection Closed",
 }
 
-class MQTTWrapper {
+export class MQTTWrapper {
   private static instance: MQTTWrapper;
 
   private static client: IMqttClient;
-
-  static status: MQTTStatus;
 
   constructor(client: IMqttClient) {
     if (typeof client === "undefined") {
@@ -35,7 +33,7 @@ class MQTTWrapper {
       return MQTTWrapper.client;
     }
     MQTTWrapper.instance = this;
-    this.status = MQTTStatus.CONNECTING;
+    store.dispatch(setClientStatus(MQTTStatus.CONNECTING));
     try {
       const sessionId = uuidv4();
       const client = await MQTT.createClient({
@@ -48,7 +46,7 @@ class MQTTWrapper {
       client.connect();
       client.on("connect", () => {
         console.log("Connection established");
-        this.status = MQTTStatus.CONNECTED;
+        store.dispatch(setClientStatus(MQTTStatus.CONNECTED));
         client.subscribe("smartshef/#", 1);
       });
       client.on("message", msg => {
@@ -64,11 +62,11 @@ class MQTTWrapper {
       });
       client.on("error", err => {
         console.log(`Connection error: ${err}`);
-        this.status = MQTTStatus.ERROR;
+        store.dispatch(setClientStatus(MQTTStatus.ERROR));
       });
       client.on("closed", () => {
         console.log("Connection closed");
-        this.status = MQTTStatus.CLOSED;
+        store.dispatch(setClientStatus(MQTTStatus.CLOSED));
       });
       MQTTWrapper.client = client;
     } catch (err) {
@@ -78,4 +76,14 @@ class MQTTWrapper {
   }
 }
 
-export default MQTTWrapper;
+export const publishImage = (client: IMqttClient, payload: string) => {
+  client.publish("smartshef/image", payload, 1, false, true);
+};
+
+export const publishAudioChunk = (client: IMqttClient, payload: string) => {
+  client.publish("smartshef/audio", payload, 1, false, true);
+};
+
+export const publishMessage = (client: IMqttClient, payload: string) => {
+  client.publish("smartshef/1", payload, 1, false, false);
+};

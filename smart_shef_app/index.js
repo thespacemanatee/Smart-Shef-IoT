@@ -11,6 +11,10 @@ LogBox.ignoreLogs(["`new NativeEventEmitter()`"]);
 
 const theme = {
   ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "dodgerblue",
+  },
 };
 
 export default function Main() {

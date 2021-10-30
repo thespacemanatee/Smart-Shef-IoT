@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IMqttClient } from "tsm-react-native-mqtt";
 
-import MQTTWrapper from "../../config/mqtt";
+import { MQTTWrapper } from "../../service/mqtt";
 
 const useMQTTClient = () => {
   const [mqttClient, setMqttClient] = useState<IMqttClient>();

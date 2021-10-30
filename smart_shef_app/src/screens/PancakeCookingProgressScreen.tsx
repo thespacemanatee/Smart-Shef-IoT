@@ -12,6 +12,7 @@ import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButto
 import { HomeStackParamList } from "../navigation";
 import { SPACING } from "../resources/dimens";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
+import { publishImage } from "../service/mqtt";
 
 type CookingProgressScreenProps = StackScreenProps<
   HomeStackParamList,
@@ -28,7 +29,7 @@ const PancakeCookingProgressScreen = ({
   const [flipped, setFlipped] = useState(false);
 
   const focused = useIsFocused();
-  const mqttClient = useMQTTClient();
+  const client = useMQTTClient();
 
   const handlePressNext = () => {
     if (stage === 3 && !flipped) {
@@ -45,18 +46,18 @@ const PancakeCookingProgressScreen = ({
       const res = await cameraRef.current?.takePictureAsync({
         base64: true,
       });
-      if (res?.base64) {
-        mqttClient?.publish("smartshef/image", res.base64, 1, false, true);
+      if (res?.base64 && client) {
+        publishImage(client, res.base64);
       }
     } catch (err) {
       console.error(err);
     }
-  }, [mqttClient]);
+  }, [client]);
 
   useEffect(() => {
     const job = setInterval(() => {
       takePicture();
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(job);
   }, [takePicture]);

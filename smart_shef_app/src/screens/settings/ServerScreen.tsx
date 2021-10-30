@@ -7,12 +7,13 @@ import DebugEntry from "../../components/elements/DebugEntry";
 import DebugSection from "../../components/elements/DebugSection";
 import Paragraph from "../../components/typography/Paragraph";
 import MQTTClientDetails from "../../components/ui/debug/MQTTClientDetails";
-import MQTTWrapper, { MQTTStatus } from "../../config/mqtt";
+import { MQTTStatus } from "../../service/mqtt";
 import { resetLogs } from "../../features/settings/settingsSlice";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 
 const ServerScreen = (): JSX.Element => {
   const logs = useAppSelector(state => state.settings.logs);
+  const clientStatus = useAppSelector(state => state.settings.clientStatus);
 
   const client = useMQTTClient();
   const dispatch = useAppDispatch();
@@ -39,12 +40,10 @@ const ServerScreen = (): JSX.Element => {
               <Paragraph
                 style={{
                   color:
-                    MQTTWrapper.status === MQTTStatus.CONNECTED
-                      ? "green"
-                      : "red",
+                    clientStatus === MQTTStatus.CONNECTED ? "green" : "red",
                 }}
               >
-                {MQTTWrapper.status}
+                {clientStatus}
               </Paragraph>
             );
           }}

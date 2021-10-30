@@ -2,6 +2,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Device } from "react-native-ble-plx";
 
+import { MQTTStatus } from "../../service/mqtt";
+
 export type LogEntry = {
   timestamp: Date;
   topic: string;
@@ -13,12 +15,14 @@ interface SettingsState {
   selectedDeviceUUID: string | null;
   devices: Device[];
   logs: LogEntry[];
+  clientStatus?: MQTTStatus | null;
 }
 
 const initialState: SettingsState = {
   selectedDeviceUUID: null,
   devices: [],
   logs: [],
+  clientStatus: null,
 };
 
 export const settingsSlice = createSlice({
@@ -48,6 +52,9 @@ export const settingsSlice = createSlice({
     resetLogs: state => {
       state.logs = [];
     },
+    setClientStatus: (state, action: PayloadAction<MQTTStatus>) => {
+      state.clientStatus = action.payload;
+    },
   },
 });
 
@@ -59,6 +66,7 @@ export const {
   resetDevices,
   addLog,
   resetLogs,
+  setClientStatus,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

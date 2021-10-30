@@ -14,6 +14,7 @@ import Paragraph from "../typography/Paragraph";
 import CTAButton from "../elements/CTAButton";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 import { HomeStackParamList } from "../../navigation";
+import { publishMessage } from "../../service/mqtt";
 
 interface RecipeModalSheetProps {
   sheetRef: React.RefObject<BottomSheet>;
@@ -23,16 +24,12 @@ interface RecipeModalSheetProps {
 const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
 
-  const mqttClient = useMQTTClient();
+  const client = useMQTTClient();
 
   const handleStartCooking = () => {
-    mqttClient?.publish(
-      "smartshef/1",
-      `Start cooking ${selectedRecipe?.name}!`,
-      1,
-      false,
-      false,
-    );
+    if (client) {
+      publishMessage(client, `Start cooking ${selectedRecipe?.name}!`);
+    }
     navigation.navigate("EquipmentSetup");
     sheetRef.current?.close();
   };

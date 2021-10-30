@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import LiveAudioStream from "react-native-live-audio-stream";
 import { Button } from "react-native-paper";
-import { log } from "react-native-reanimated";
 
 import DebugSection from "../../components/elements/DebugSection";
+import { SPACING } from "../../resources/dimens";
+import { publishAudioChunk } from "../../service/mqtt";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 import { requestRecordAudioPermissions } from "../../utils/utils";
 
@@ -17,7 +18,7 @@ const options = {
 };
 
 const SensorsScreen = (): JSX.Element => {
-  const mqttClient = useMQTTClient();
+  const client = useMQTTClient();
 
   const startRecording = async () => {
     const granted = await requestRecordAudioPermissions();
@@ -25,7 +26,9 @@ const SensorsScreen = (): JSX.Element => {
       LiveAudioStream.start();
 
       LiveAudioStream.on("data", data => {
-        mqttClient?.publish("smartshef/audio", data, 1, false, true);
+        if (client) {
+          publishAudioChunk(client, data);
+        }
       });
     }
   };
@@ -42,8 +45,22 @@ const SensorsScreen = (): JSX.Element => {
     <View style={styles.screen}>
       <ScrollView>
         <DebugSection label="Microphone" initialExpanded>
-          <Button onPress={startRecording}>Start</Button>
-          <Button onPress={stopRecording}>Stop</Button>
+          <View style={styles.buttonContainer}>
+            <Button
+              mode="outlined"
+              onPress={startRecording}
+              style={styles.startButton}
+            >
+              Start
+            </Button>
+            <Button
+              mode="outlined"
+              onPress={stopRecording}
+              style={styles.stopButton}
+            >
+              Stop
+            </Button>
+          </View>
         </DebugSection>
       </ScrollView>
     </View>
@@ -56,5 +73,18 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  startButton: {
+    flex: 1,
+    marginRight: SPACING.spacing_4,
+  },
+  stopButton: {
+    flex: 1,
+    marginLeft: SPACING.spacing_4,
   },
 });
