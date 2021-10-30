@@ -21,6 +21,27 @@ export const requestLocationPermissions = async (): Promise<boolean> => {
   return true;
 };
 
+export const requestRecordAudioPermissions = async (): Promise<boolean> => {
+  try {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+    );
+    if (!granted) {
+      const request = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      );
+      if (request === PermissionsAndroid.RESULTS.GRANTED) {
+        return true;
+      }
+      return false;
+    }
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+  return true;
+};
+
 export const getTemperatureFromHumidity = (humidity: string) => {
   return (
     ((humidity.charCodeAt(0) + humidity.charCodeAt(1) * 256) / 65536) * 165 -

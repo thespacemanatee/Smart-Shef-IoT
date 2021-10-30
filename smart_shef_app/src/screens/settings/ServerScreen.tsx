@@ -1,6 +1,5 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useCallback } from "react";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -17,6 +16,17 @@ const ServerScreen = (): JSX.Element => {
 
   const client = useMQTTClient();
   const dispatch = useAppDispatch();
+
+  const renderLogs = useCallback(({ item }) => {
+    return (
+      <DebugEntry
+        entry={`${item.timestamp.toLocaleTimeString()}   Topic: ${
+          item.topic
+        }   QoS: ${item.qos}   Retained: ${item.retain}`}
+        value={item.message.slice(0, 38)}
+      />
+    );
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -47,17 +57,7 @@ const ServerScreen = (): JSX.Element => {
             <Button onPress={() => dispatch(resetLogs())}>Clear</Button>
           )}
         >
-          {logs.map((item, index) => {
-            return (
-              <DebugEntry
-                key={String(index)}
-                entry={`${item.timestamp.toLocaleTimeString()}   Topic: ${
-                  item.topic
-                }   QoS: ${item.qos}   Retained: ${item.retain}`}
-                value={item.message.slice(0, 38)}
-              />
-            );
-          })}
+          <FlatList data={logs} renderItem={renderLogs} />
         </DebugSection>
       </ScrollView>
     </View>
