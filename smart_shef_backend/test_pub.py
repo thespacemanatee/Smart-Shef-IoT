@@ -9,7 +9,11 @@ def on_connect(client, userdata, flags, rc):
     print('Waiting for 2 seconds.')
     sleep(2)
     print('Sending message.')
-    client.publish('smartshef/1', 'This is a test.')
+    poll(client)
+
+def poll(client):
+    for i in range(100):
+        client.publish('smartshef/1', f'Test message: {i}')
 
 
 client = mqtt.Client()

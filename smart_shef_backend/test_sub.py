@@ -1,8 +1,6 @@
-import paho.mqtt.client as mqtt
-from PIL import Image
-import base64
-import io
 import numpy as np
+
+from utils import get_audio_data, get_img_data, setup
 
 
 def on_connect(client, userdata, flags, rc):
@@ -11,22 +9,26 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
-    payload = msg.payload.decode('utf8')
     if (msg.topic == "smartshef/image"):
         print("Received image...")
-        decoded_img = base64.b64decode(payload)
-        img = Image.open(io.BytesIO(decoded_img))
-        img_data = np.array(img)
-        print(img_data)
+        img_data = get_img_data(msg.payload)
+
+    elif (msg.topic == "smartshef/audio"):
+        print("Received audio...")
+        audio_data = get_audio_data(msg.payload)
+        
     else:
-        print(msg.topic, payload)
+        print(msg.topic, msg.payload.decode('utf-8'))
 
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
 
-client.username_pw_set(username='device', password='SmartShef')
-print('Connecting...')
-client.connect('localhost')
-client.loop_forever()
+def main():
+    client = setup(on_connect=on_connect, on_message=on_message)
+    client.loop_forever()
+
+    while True:
+        pass
+
+
+if __name__ == "__main__":
+    main()
