@@ -4,6 +4,7 @@ import {
   Alert,
   FlatList,
   Modal,
+  RefreshControl,
   StyleSheet,
   TouchableNativeFeedback,
   View,
@@ -25,12 +26,14 @@ import {
 interface BluetoothModalProps {
   visible: boolean;
   onDismiss: () => void;
+  onRefresh: () => void;
   loading: boolean;
 }
 
 const BluetoothModal = ({
   visible,
   onDismiss,
+  onRefresh,
   loading,
 }: BluetoothModalProps) => {
   const devices = useAppSelector(state => state.settings.devices);
@@ -95,26 +98,25 @@ const BluetoothModal = ({
       visible={visible}
       onRequestClose={onDismiss}
     >
-      <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+      <View style={styles.backdrop}>
         <View style={styles.content}>
           <View style={styles.titleContainer}>
             <Title>Devices</Title>
           </View>
-          {devices.length > 0 ? (
-            <FlatList
-              data={devices}
-              renderItem={renderDevices}
-              ItemSeparatorComponent={() => <ItemSeperatorComponent />}
-            />
-          ) : loading ? (
-            <View style={styles.indicatorContainer}>
-              <ActivityIndicator size="large" />
-            </View>
-          ) : (
-            <View style={styles.indicatorContainer}>
-              <Paragraph>No Devices Found</Paragraph>
-            </View>
-          )}
+          <FlatList
+            contentContainerStyle={styles.listContentContainer}
+            data={devices}
+            renderItem={renderDevices}
+            ItemSeparatorComponent={() => <ItemSeperatorComponent />}
+            refreshControl={
+              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+            }
+            ListEmptyComponent={() => (
+              <View style={styles.indicatorContainer}>
+                <Paragraph>No Devices Found</Paragraph>
+              </View>
+            )}
+          />
         </View>
       </View>
     </Modal>
@@ -124,8 +126,9 @@ const BluetoothModal = ({
 export default BluetoothModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
+  backdrop: {
     flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
     flex: 1,
@@ -137,8 +140,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.spacing_16,
     paddingTop: SPACING.spacing_16,
   },
+  listContentContainer: {
+    flexGrow: 1,
+  },
   indicatorContainer: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },

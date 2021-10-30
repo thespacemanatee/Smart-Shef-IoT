@@ -81,6 +81,7 @@ const BluetoothScreen = () => {
       <BluetoothModal
         visible={visible}
         onDismiss={handleDismissModal}
+        onRefresh={scanDevices}
         loading={bluetoothLoading}
       />
       <View style={styles.screen}>
