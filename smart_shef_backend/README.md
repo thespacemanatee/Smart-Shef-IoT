@@ -22,6 +22,8 @@ This topic handles the publishing and subscribing of the stages of the cooking p
 **Methods** : `Publish` and `Subscribe`
 
 ## Payload
+**Sample**
+
 Start cooking a recipe
 
 ```json
@@ -35,7 +37,16 @@ Secondary device ready
 ```json
 {
     recipe: "Pancake",
-    status: "ready"
+    status: "ready",
+    stage: 0
+}
+```
+Cooking process stage 1
+```json
+{
+    recipe: "Pancake",
+    status: "ready",
+    stage: 1
 }
 ```
 
