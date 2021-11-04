@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Checkbox } from "react-native-paper";
 
 import { useAppSelector } from "../../app/hooks";
 import Title from "../typography/Title";
@@ -23,15 +24,29 @@ interface RecipeModalSheetProps {
 
 const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
   const selectedRecipe = useAppSelector(state => state.recipe.selectedRecipe);
+  const [checked, setChecked] = useState(false);
 
   const client = useMQTTClient();
 
+  const handleChecked = () => {
+    setChecked(!checked);
+  };
+
   const handleStartCooking = () => {
-    if (client) {
-      publishMessage(client, `Start cooking ${selectedRecipe?.name}!`);
+    if (checked) {
+      navigation.navigate("EquipmentSetup");
+      sheetRef.current?.close();
+    } else {
+      if (client) {
+        const payload = {
+          recipe: selectedRecipe?.name,
+          status: "started",
+        };
+        publishMessage(client, JSON.stringify(payload));
+      }
+      navigation.navigate("PancakeCookingProgress");
+      sheetRef.current?.close();
     }
-    navigation.navigate("EquipmentSetup");
-    sheetRef.current?.close();
   };
 
   return (
@@ -53,7 +68,16 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
           <SmallHeading>Cooking Time</SmallHeading>
           <Paragraph>TBD</Paragraph>
         </View>
-        <CTAButton label="Start Cooking" onPress={handleStartCooking} />
+        <View>
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              status={checked ? "checked" : "unchecked"}
+              onPress={handleChecked}
+            />
+            <Paragraph>I&apos;m using this device as a sensor!</Paragraph>
+          </View>
+          <CTAButton label="Start Cooking" onPress={handleStartCooking} />
+        </View>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -66,6 +90,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     marginHorizontal: SPACING.spacing_16,
+    marginBottom: SPACING.spacing_16,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: SPACING.spacing_16,
   },
 });

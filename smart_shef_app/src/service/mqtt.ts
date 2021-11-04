@@ -87,3 +87,7 @@ export const publishAudioChunk = (client: IMqttClient, payload: string) => {
 export const publishMessage = (client: IMqttClient, payload: string) => {
   client.publish("smartshef/1", payload, 1, false, false);
 };
+
+export const publishCookingProcess = (client: IMqttClient, payload: string) => {
+  client.publish("smartshef/cooking-process", payload, 1, false, false);
+};

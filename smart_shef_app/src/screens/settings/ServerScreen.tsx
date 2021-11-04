@@ -24,7 +24,7 @@ const ServerScreen = (): JSX.Element => {
         entry={`${item.timestamp.toLocaleTimeString()}   Topic: ${
           item.topic
         }   QoS: ${item.qos}   Retained: ${item.retain}`}
-        value={item.message.slice(0, 38)}
+        value={item.message.slice(0, 100)}
       />
     );
   }, []);

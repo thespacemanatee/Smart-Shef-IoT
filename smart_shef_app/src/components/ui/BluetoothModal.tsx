@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: "white",
-    margin: SPACING.spacing_32,
+    margin: SPACING.spacing_16,
     borderRadius: SPACING.spacing_16,
   },
   titleContainer: {

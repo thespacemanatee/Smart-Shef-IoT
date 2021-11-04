@@ -38,15 +38,17 @@ Secondary device ready
 {
     recipe: "Pancake",
     status: "ready",
-    stage: 0
+    stage: 0,
+    step: 0
 }
 ```
-Cooking process stage 1
+Cooking process stage 1 and step 1
 ```json
 {
     recipe: "Pancake",
     status: "ready",
-    stage: 1
+    stage: 1,
+    step: 1
 }
 ```
 
