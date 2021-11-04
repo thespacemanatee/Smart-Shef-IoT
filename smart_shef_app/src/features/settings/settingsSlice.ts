@@ -15,6 +15,7 @@ interface SettingsState {
   selectedDeviceUUID: string | null;
   devices: Device[];
   logs: LogEntry[];
+  latestLog: LogEntry | null;
   clientStatus?: MQTTStatus | null;
 }
 
@@ -22,6 +23,7 @@ const initialState: SettingsState = {
   selectedDeviceUUID: null,
   devices: [],
   logs: [],
+  latestLog: null,
   clientStatus: null,
 };
 
@@ -48,6 +50,7 @@ export const settingsSlice = createSlice({
     },
     addLog: (state, action: PayloadAction<LogEntry>) => {
       state.logs = [action.payload].concat(state.logs);
+      state.latestLog = action.payload;
     },
     resetLogs: state => {
       state.logs = [];

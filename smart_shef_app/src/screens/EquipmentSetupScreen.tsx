@@ -62,6 +62,8 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
     const payload = {
       recipe: selectedRecipe?.name,
       status: "ready",
+      stage: 0,
+      step: 0,
     };
     if (client) {
       publishCookingProcess(client, JSON.stringify(payload));

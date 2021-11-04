@@ -12,6 +12,8 @@ import { SPACING } from "../resources/dimens";
 import useSubscribeCookingProcess from "../utils/hooks/useSubscribeCookingProcess";
 import { publishCookingProcess } from "../service/mqtt";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
+import SensorSyncAnimation from "../components/lottie/SensorSyncAnimation";
+import Paragraph from "../components/typography/Paragraph";
 
 const BEFORE_FLIPPED_STAGE = 3;
 const AFTER_FLIPPED_STAGE = BEFORE_FLIPPED_STAGE + 1;
@@ -73,21 +75,32 @@ const PancakeCookingProgressScreen = ({
     }
   };
 
+  if (status === "ready") {
+    return (
+      <View style={styles.screen}>
+        <HeaderTitleWithBackButton
+          title={selectedRecipe?.name}
+          onPress={navigation.goBack}
+        />
+        <View style={styles.progressBar}>
+          <AnimatedPancakeCookingProgressBar stage={stage} />
+        </View>
+        <PancakeCookingStageGraphics step={step} />
+        <View style={styles.buttonContainer}>
+          <CTAButton
+            label={step === AFTER_FLIPPED_STAGE ? "Flipped!" : "Next"}
+            onPress={handlePressNext}
+          />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
-      <HeaderTitleWithBackButton
-        title={selectedRecipe?.name}
-        onPress={navigation.goBack}
-      />
-      <View style={styles.progressBar}>
-        <AnimatedPancakeCookingProgressBar stage={stage} />
-      </View>
-      <PancakeCookingStageGraphics step={step} />
-      <View style={styles.buttonContainer}>
-        <CTAButton
-          label={step === AFTER_FLIPPED_STAGE ? "Flipped!" : "Next"}
-          onPress={handlePressNext}
-        />
+      <View style={styles.syncingContainer}>
+        <SensorSyncAnimation />
+        <Paragraph>Waiting for sensor connection...</Paragraph>
       </View>
     </View>
   );
@@ -99,6 +112,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "white",
+  },
+  syncingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   progressBar: {
     margin: SPACING.spacing_16,

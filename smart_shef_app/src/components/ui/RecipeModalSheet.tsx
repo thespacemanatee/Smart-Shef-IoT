@@ -15,7 +15,7 @@ import Paragraph from "../typography/Paragraph";
 import CTAButton from "../elements/CTAButton";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 import { HomeStackParamList } from "../../navigation";
-import { publishMessage } from "../../service/mqtt";
+import { publishCookingProcess } from "../../service/mqtt";
 
 interface RecipeModalSheetProps {
   sheetRef: React.RefObject<BottomSheet>;
@@ -42,7 +42,7 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
           recipe: selectedRecipe?.name,
           status: "started",
         };
-        publishMessage(client, JSON.stringify(payload));
+        publishCookingProcess(client, JSON.stringify(payload));
       }
       navigation.navigate("PancakeCookingProgress");
       sheetRef.current?.close();
