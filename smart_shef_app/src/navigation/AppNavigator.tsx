@@ -15,6 +15,7 @@ import { FONT_SIZE, SPACING } from "../resources/dimens";
 import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
 import PancakeCookingProgressScreen from "../screens/PancakeCookingProgressScreen";
 import SensorsScreen from "../screens/settings/SensorsScreen";
+import PancakeCookingDoneScreen from "../screens/PancakeCookingDoneScreen";
 
 const AppNavigator = (): JSX.Element => {
   const Tab = createBottomTabNavigator();
@@ -28,6 +29,10 @@ const AppNavigator = (): JSX.Element => {
         <Screen
           name="PancakeCookingProgress"
           component={PancakeCookingProgressScreen}
+        />
+        <Screen
+          name="PancakeCookingDone"
+          component={PancakeCookingDoneScreen}
         />
       </Navigator>
     );

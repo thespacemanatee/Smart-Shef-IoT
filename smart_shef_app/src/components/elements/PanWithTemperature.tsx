@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import FirePan from "../graphics/FirePan";
+import FirePan from "../graphics/pancake/FirePan";
 
 interface PanWithTemperatureProps {
   temperature: number;

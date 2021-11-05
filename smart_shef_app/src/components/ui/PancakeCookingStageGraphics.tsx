@@ -2,10 +2,11 @@ import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import PanWithTemperature from "../elements/PanWithTemperature";
-import OilPan from "../graphics/OilPan";
-import PancakeFlipping from "../graphics/PancakeFlipping";
-import PancakeNoBubbles from "../graphics/PancakesNoBubbles";
-import PancakeWithBubbles from "../graphics/PancakeWithBubbles";
+import CountdownTimer from "../graphics/pancake/CountdownTimer";
+import OilPan from "../graphics/pancake/OilPan";
+import PancakeFlipping from "../graphics/pancake/PancakeFlipping";
+import PancakeNoBubbles from "../graphics/pancake/PancakesNoBubbles";
+import PancakeWithBubbles from "../graphics/pancake/PancakeWithBubbles";
 import Subheading from "../typography/Subheading";
 
 const GRAPHIC_WIDTH = 246;
@@ -18,7 +19,6 @@ const infos = [
   "Wait till you see holes form on the top",
   "Flip now!",
   "Wait for 1 minute",
-  "Time’s Up!",
 ];
 
 interface PancakeCookingStageGraphicsProps {
@@ -37,6 +37,7 @@ const PancakeCookingStageGraphics = ({
       <PancakeNoBubbles />,
       <PancakeWithBubbles />,
       <PancakeFlipping />,
+      <CountdownTimer />,
     ],
     [temperature],
   );
