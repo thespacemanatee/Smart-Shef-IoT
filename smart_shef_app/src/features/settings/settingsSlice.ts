@@ -15,7 +15,7 @@ interface SettingsState {
   selectedDeviceUUID: string | null;
   devices: Device[];
   logs: LogEntry[];
-  latestLog: LogEntry | null;
+  latestCookingLog: LogEntry | null;
   clientStatus?: MQTTStatus | null;
 }
 
@@ -23,7 +23,7 @@ const initialState: SettingsState = {
   selectedDeviceUUID: null,
   devices: [],
   logs: [],
-  latestLog: null,
+  latestCookingLog: null,
   clientStatus: null,
 };
 
@@ -50,7 +50,12 @@ export const settingsSlice = createSlice({
     },
     addLog: (state, action: PayloadAction<LogEntry>) => {
       state.logs = [action.payload].concat(state.logs);
-      state.latestLog = action.payload;
+      if (action.payload.topic === "smartshef/cooking-process") {
+        state.latestCookingLog = action.payload;
+      }
+    },
+    resetCookingLog: state => {
+      state.latestCookingLog = null;
     },
     resetLogs: state => {
       state.logs = [];
@@ -68,6 +73,7 @@ export const {
   removeDevice,
   resetDevices,
   addLog,
+  resetCookingLog,
   resetLogs,
   setClientStatus,
 } = settingsSlice.actions;

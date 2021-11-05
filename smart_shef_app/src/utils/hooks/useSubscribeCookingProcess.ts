@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useAppSelector } from "../../app/hooks";
 
 const useSubscribeCookingProcess = () => {
-  const log = useAppSelector(state => state.settings.latestLog);
+  const log = useAppSelector(state => state.settings.latestCookingLog);
   const [status, setStatus] = useState("started");
   const [stage, setStage] = useState(0);
   const [step, setStep] = useState(0);

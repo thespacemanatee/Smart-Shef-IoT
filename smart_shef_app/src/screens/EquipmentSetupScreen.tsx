@@ -17,8 +17,9 @@ import { SPACING } from "../resources/dimens";
 import CTAButton from "../components/elements/CTAButton";
 import { publishCookingProcess, publishImage } from "../service/mqtt";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import useSubscribeCookingProcess from "../utils/hooks/useSubscribeCookingProcess";
+import { resetCookingLog } from "../features/settings/settingsSlice";
 
 const CAMERA_WIDTH = Dimensions.get("window").width;
 const CAMERA_HEIGHT = (CAMERA_WIDTH / 3) * 4;
@@ -36,11 +37,13 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   const cameraRef = useRef<Camera>(null);
 
   const focused = useIsFocused();
+  const dispatch = useAppDispatch();
   const client = useMQTTClient();
   const { status } = useSubscribeCookingProcess();
 
   useEffect(() => {
     if (status === "done") {
+      dispatch(resetCookingLog());
       navigation.goBack();
     }
   }, [navigation, status]);

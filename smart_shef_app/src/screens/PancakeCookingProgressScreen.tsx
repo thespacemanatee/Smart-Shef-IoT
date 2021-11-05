@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import CTAButton from "../components/elements/CTAButton";
 import AnimatedPancakeCookingProgressBar from "../components/ui/AnimatedPancakeCookingProgressBar";
 import PancakeCookingStageGraphics from "../components/ui/PancakeCookingStageGraphics";
@@ -14,6 +14,7 @@ import { publishCookingProcess } from "../service/mqtt";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
 import SensorSyncAnimation from "../components/lottie/SensorSyncAnimation";
 import Paragraph from "../components/typography/Paragraph";
+import { resetCookingLog } from "../features/settings/settingsSlice";
 
 const BEFORE_FLIPPED_STAGE = 3;
 const AFTER_FLIPPED_STAGE = BEFORE_FLIPPED_STAGE + 1;
@@ -31,6 +32,7 @@ const PancakeCookingProgressScreen = ({
   const [step, setStep] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
+  const dispatch = useAppDispatch();
   const client = useMQTTClient();
   const {
     status,
@@ -48,9 +50,10 @@ const PancakeCookingProgressScreen = ({
 
   useEffect(() => {
     if (status === "done") {
+      dispatch(resetCookingLog());
       navigation.goBack();
     }
-  }, [navigation, status]);
+  }, [dispatch, navigation, status]);
 
   const handlePressNext = () => {
     if (stage === BEFORE_FLIPPED_STAGE && !flipped) {
