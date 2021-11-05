@@ -1,27 +1,24 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import useMonitorHumidityCharacteristic from "../../utils/hooks/useMonitorHumidityCharacteristic";
-import { getTemperatureFromHumidity } from "../../utils/utils";
 import FirePan from "../graphics/FirePan";
 
-const PanWithTemperature = () => {
-  const { decodedString } = useMonitorHumidityCharacteristic();
+interface PanWithTemperatureProps {
+  temperature: number;
+}
 
+const PanWithTemperature = ({ temperature }: PanWithTemperatureProps) => {
   return (
     <View>
       <Text
         style={[
           styles.temperatureText,
           {
-            color:
-              Math.round(getTemperatureFromHumidity(decodedString)) >= 40
-                ? "#A3CF6B"
-                : "#BCBCBC",
+            color: Math.round(temperature) >= 40 ? "#A3CF6B" : "#BCBCBC",
           },
         ]}
       >
-        {`${getTemperatureFromHumidity(decodedString).toFixed(0)}°C`}
+        {`${temperature.toFixed(0)}°C`}
       </Text>
       <FirePan />
     </View>

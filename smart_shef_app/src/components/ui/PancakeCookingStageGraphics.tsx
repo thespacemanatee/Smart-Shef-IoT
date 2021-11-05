@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
 import PanWithTemperature from "../elements/PanWithTemperature";
@@ -8,10 +8,10 @@ import PancakeNoBubbles from "../graphics/PancakesNoBubbles";
 import PancakeWithBubbles from "../graphics/PancakeWithBubbles";
 import Subheading from "../typography/Subheading";
 
-const WIDTH = 246;
-const HEIGHT = 246;
+const GRAPHIC_WIDTH = 246;
+const GRAPHIC_HEIGHT = 246;
 
-const info = [
+const infos = [
   "Add a thin layer of oil to the pan",
   "Heat your pan to 40°C",
   "Add 3 scoops of prepared batter",
@@ -21,25 +21,30 @@ const info = [
   "Time’s Up!",
 ];
 
-const graphic = [
-  <OilPan />,
-  <PanWithTemperature />,
-  <PancakeNoBubbles />,
-  <PancakeWithBubbles />,
-  <PancakeFlipping />,
-];
-
 interface PancakeCookingStageGraphicsProps {
   step: number;
+  temperature: number;
 }
 
 const PancakeCookingStageGraphics = ({
   step,
+  temperature,
 }: PancakeCookingStageGraphicsProps) => {
+  const graphics = useMemo(
+    () => [
+      <OilPan />,
+      <PanWithTemperature temperature={temperature} />,
+      <PancakeNoBubbles />,
+      <PancakeWithBubbles />,
+      <PancakeFlipping />,
+    ],
+    [temperature],
+  );
+
   return (
     <View style={styles.container}>
-      <Subheading style={styles.text}>{info[step]}</Subheading>
-      <View style={styles.graphicContainer}>{graphic[step]}</View>
+      <Subheading style={styles.text}>{infos[step]}</Subheading>
+      <View style={styles.graphicContainer}>{graphics[step]}</View>
     </View>
   );
 };
@@ -56,8 +61,8 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
   },
   graphicContainer: {
-    width: WIDTH,
-    height: HEIGHT,
+    width: GRAPHIC_WIDTH,
+    height: GRAPHIC_HEIGHT,
     justifyContent: "center",
     alignItems: "center",
   },

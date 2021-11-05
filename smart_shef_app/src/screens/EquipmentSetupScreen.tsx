@@ -155,7 +155,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
               </View>
               <View style={styles.buttonContainer}>
                 <CTAButton
-                  label={status === "ready" ? "Done" : "I'm Ready!"}
+                  label={status === "started" ? "I'm Ready" : "Done"}
                   onPress={
                     status === "ready" ? handlePressDone : handlePressReady
                   }

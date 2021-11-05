@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
@@ -15,6 +15,8 @@ import useMQTTClient from "../utils/hooks/useMQTTClient";
 import SensorSyncAnimation from "../components/lottie/SensorSyncAnimation";
 import Paragraph from "../components/typography/Paragraph";
 import { resetCookingLog } from "../features/settings/settingsSlice";
+import useMonitorHumidityCharacteristic from "../utils/hooks/useMonitorHumidityCharacteristic";
+import { getTemperatureFromHumidity } from "../utils/utils";
 
 const BEFORE_FLIPPED_STAGE = 3;
 const AFTER_FLIPPED_STAGE = BEFORE_FLIPPED_STAGE + 1;
@@ -39,6 +41,12 @@ const PancakeCookingProgressScreen = ({
     stage: payloadStage,
     step: payloadStep,
   } = useSubscribeCookingProcess();
+  const { decodedString } = useMonitorHumidityCharacteristic();
+
+  const temperature = useMemo(
+    () => getTemperatureFromHumidity(decodedString),
+    [decodedString],
+  );
 
   useEffect(() => {
     setStage(payloadStage);
@@ -90,7 +98,12 @@ const PancakeCookingProgressScreen = ({
         <View style={styles.progressBar}>
           <AnimatedPancakeCookingProgressBar stage={stage} />
         </View>
-        <PancakeCookingStageGraphics step={step} />
+        <PancakeCookingStageGraphics step={step} temperature={temperature} />
+        <View style={styles.temperatureTextContainer}>
+          <Paragraph style={styles.temperatureText}>
+            {`Pan heat temperature: ${temperature.toFixed(0)}°C`}
+          </Paragraph>
+        </View>
         <View style={styles.buttonContainer}>
           <CTAButton
             label={step === AFTER_FLIPPED_STAGE ? "Flipped!" : "Next"}
@@ -103,6 +116,7 @@ const PancakeCookingProgressScreen = ({
 
   return (
     <View style={styles.screen}>
+      <HeaderTitleWithBackButton onPress={navigation.goBack} />
       <View style={styles.syncingContainer}>
         <SensorSyncAnimation />
         <Paragraph>Waiting for sensor connection...</Paragraph>
@@ -125,6 +139,14 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     margin: SPACING.spacing_16,
+  },
+  temperatureTextContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  temperatureText: {
+    fontFamily: "Poppins-Medium",
+    color: "#ACACAC",
   },
   buttonContainer: {
     margin: SPACING.spacing_16,
