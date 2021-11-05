@@ -5,8 +5,21 @@ import {
   MQTT_USERNAME,
   MQTT_PASSWORD,
 } from "react-native-dotenv";
+
 import { store } from "../app/store";
 import { addLog, setClientStatus } from "../features/settings/settingsSlice";
+
+export type CookingProcessPayload = {
+  recipe: string;
+  status: string;
+  stage?: number;
+  step?: number;
+};
+
+export type TemperaturePayload = {
+  temperature: string;
+  timestamp: number;
+};
 
 export enum MQTTStatus {
   CONNECTED = "Connected",
@@ -84,6 +97,28 @@ export const publishAudioChunk = (client: IMqttClient, payload: string) => {
   client.publish("smartshef/audio", payload, 1, false, true);
 };
 
-export const publishCookingProcess = (client: IMqttClient, payload: string) => {
-  client.publish("smartshef/cooking-process", payload, 1, false, false);
+export const publishTemperature = (
+  client: IMqttClient,
+  payload: TemperaturePayload,
+) => {
+  client.publish(
+    "smartshef/temperature",
+    JSON.stringify(payload),
+    1,
+    false,
+    false,
+  );
+};
+
+export const publishCookingProcess = (
+  client: IMqttClient,
+  payload: CookingProcessPayload,
+) => {
+  client.publish(
+    "smartshef/cooking-process",
+    JSON.stringify(payload),
+    1,
+    false,
+    false,
+  );
 };

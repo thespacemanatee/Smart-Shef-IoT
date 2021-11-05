@@ -39,10 +39,10 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
     } else {
       if (client) {
         const payload = {
-          recipe: selectedRecipe?.name,
+          recipe: selectedRecipe?.name || "",
           status: "started",
         };
-        publishCookingProcess(client, JSON.stringify(payload));
+        publishCookingProcess(client, payload);
       }
       navigation.navigate("PancakeCookingProgress");
       sheetRef.current?.close();

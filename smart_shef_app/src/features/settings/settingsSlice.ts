@@ -49,7 +49,7 @@ export const settingsSlice = createSlice({
       state.devices = [];
     },
     addLog: (state, action: PayloadAction<LogEntry>) => {
-      state.logs = [action.payload].concat(state.logs);
+      state.logs = [action.payload, ...state.logs];
       if (action.payload.topic === "smartshef/cooking-process") {
         state.latestCookingLog = action.payload;
       }

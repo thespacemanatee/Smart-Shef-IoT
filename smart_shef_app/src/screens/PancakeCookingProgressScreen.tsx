@@ -50,9 +50,11 @@ const PancakeCookingProgressScreen = ({
 
   useEffect(() => {
     if (status === "done") {
-      dispatch(resetCookingLog());
       navigation.goBack();
     }
+    return () => {
+      dispatch(resetCookingLog());
+    };
   }, [dispatch, navigation, status]);
 
   const handlePressNext = () => {
@@ -60,21 +62,21 @@ const PancakeCookingProgressScreen = ({
       setFlipped(!flipped);
       if (client) {
         const payload = {
-          recipe: selectedRecipe?.name,
+          recipe: selectedRecipe?.name || "",
           status: "ready",
           stage,
           step: step + 1,
         };
-        publishCookingProcess(client, JSON.stringify(payload));
+        publishCookingProcess(client, payload);
       }
     } else if (client) {
       const payload = {
-        recipe: selectedRecipe?.name,
+        recipe: selectedRecipe?.name || "",
         status: "ready",
         stage: stage + 1,
         step: step + 1,
       };
-      publishCookingProcess(client, JSON.stringify(payload));
+      publishCookingProcess(client, payload);
     }
   };
 

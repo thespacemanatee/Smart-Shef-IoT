@@ -15,11 +15,17 @@ import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButto
 import Paragraph from "../components/typography/Paragraph";
 import { SPACING } from "../resources/dimens";
 import CTAButton from "../components/elements/CTAButton";
-import { publishCookingProcess, publishImage } from "../service/mqtt";
+import {
+  publishCookingProcess,
+  publishImage,
+  publishTemperature,
+} from "../service/mqtt";
 import useMQTTClient from "../utils/hooks/useMQTTClient";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import useSubscribeCookingProcess from "../utils/hooks/useSubscribeCookingProcess";
 import { resetCookingLog } from "../features/settings/settingsSlice";
+import useMonitorHumidityCharacteristic from "../utils/hooks/useMonitorHumidityCharacteristic";
+import { getTemperatureFromHumidity } from "../utils/utils";
 
 const CAMERA_WIDTH = Dimensions.get("window").width;
 const CAMERA_HEIGHT = (CAMERA_WIDTH / 3) * 4;
@@ -39,14 +45,17 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   const focused = useIsFocused();
   const dispatch = useAppDispatch();
   const client = useMQTTClient();
+  const { decodedString: humidity } = useMonitorHumidityCharacteristic();
   const { status } = useSubscribeCookingProcess();
 
   useEffect(() => {
     if (status === "done") {
-      dispatch(resetCookingLog());
       navigation.goBack();
     }
-  }, [navigation, status]);
+    return () => {
+      dispatch(resetCookingLog());
+    };
+  }, [dispatch, navigation, status]);
 
   useEffect(() => {
     (async () => {
@@ -62,18 +71,19 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   };
 
   const handlePressReady = () => {
-    const payload = {
-      recipe: selectedRecipe?.name,
+    const processPayload = {
+      recipe: selectedRecipe?.name || "",
       status: "ready",
       stage: 0,
       step: 0,
     };
     if (client) {
-      publishCookingProcess(client, JSON.stringify(payload));
+      publishCookingProcess(client, processPayload);
     }
     setPublishJob(
       setInterval(() => {
         takePicture();
+        takeTemperature();
       }, 2000),
     );
   };
@@ -83,11 +93,11 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
       clearInterval(publishJob);
     }
     const payload = {
-      recipe: selectedRecipe?.name,
+      recipe: selectedRecipe?.name || "",
       status: "done",
     };
     if (client) {
-      publishCookingProcess(client, JSON.stringify(payload));
+      publishCookingProcess(client, payload);
     }
   };
 
@@ -103,6 +113,17 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
       console.error(err);
     }
   }, [client]);
+
+  const takeTemperature = useCallback(() => {
+    const tempPayload = {
+      temperature: getTemperatureFromHumidity(humidity).toFixed(2),
+      timestamp: Date.now(),
+    };
+
+    if (client) {
+      publishTemperature(client, tempPayload);
+    }
+  }, [client, humidity]);
 
   useEffect(() => {
     return () => {
