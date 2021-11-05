@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
@@ -9,6 +9,8 @@ import { HomeStackParamList } from "../navigation";
 import { SPACING } from "../resources/dimens";
 import HeaderTitleWithBackButton from "../components/ui/HeaderTitleWithBackButton";
 import Title from "../components/typography/Title";
+import { useAppDispatch } from "../app/hooks";
+import { resetCookingLog } from "../features/settings/settingsSlice";
 
 const GRAPHIC_WIDTH = 246;
 const GRAPHIC_HEIGHT = 246;
@@ -21,6 +23,13 @@ type PancakeCookingDoneScreenProps = StackScreenProps<
 const PancakeCookingDoneScreen = ({
   navigation,
 }: PancakeCookingDoneScreenProps) => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetCookingLog());
+    };
+  }, [dispatch]);
   return (
     <View style={styles.screen}>
       <HeaderTitleWithBackButton
@@ -37,7 +46,7 @@ const PancakeCookingDoneScreen = ({
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <CTAButton label="Done" onPress={navigation.popToTop} />
+        <CTAButton label="Done" onPress={navigation.goBack} />
       </View>
     </View>
   );
