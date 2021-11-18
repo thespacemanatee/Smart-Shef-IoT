@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Characteristic, Subscription } from "react-native-ble-plx";
 
-import { MOVEMENT_CONFIG, MOVEMENT_DISABLE, SENSOR_PERIOD } from "../bluetooth";
+import { MOVEMENT_CONFIG, MOVEMENT_DISABLE } from "../bluetooth";
 import {
   decodeBleString,
   getMovementCharacteristics,
@@ -15,7 +15,7 @@ const useMonitorMovementCharacteristic = () => {
     let characteristic: Characteristic | null;
     const monitor = async () => {
       try {
-        const { movementDataChar, movementConfigChar, movementPeriodChar } =
+        const { movementDataChar, movementConfigChar } =
           await getMovementCharacteristics();
         await movementConfigChar?.writeWithResponse(MOVEMENT_CONFIG);
 

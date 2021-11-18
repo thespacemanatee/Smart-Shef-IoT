@@ -29,8 +29,7 @@ const CountdownTimer = () => {
       }
 
       return () => clearInterval(timer);
-      // TODO: change to 1000
-    }, 100);
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
