@@ -7,7 +7,7 @@ import {
   getMovementCharacteristics,
 } from "../bluetooth/BleHelper";
 
-const useMonitormovementCharacteristic = () => {
+const useMonitorMovementCharacteristic = () => {
   const [decodedString, setDecodedString] = useState("");
 
   useEffect(() => {
@@ -18,7 +18,6 @@ const useMonitormovementCharacteristic = () => {
         const { movementDataChar, movementConfigChar, movementPeriodChar } =
           await getMovementCharacteristics();
         await movementConfigChar?.writeWithResponse(MOVEMENT_CONFIG);
-        await movementPeriodChar?.writeWithResponse(SENSOR_PERIOD);
 
         characteristic = movementConfigChar;
         subscription = movementDataChar?.monitor((err, char) => {
@@ -26,7 +25,6 @@ const useMonitormovementCharacteristic = () => {
             console.error(JSON.stringify(err));
             return;
           }
-          console.log(char);
           setDecodedString(decodeBleString(char?.value));
         });
       } catch (err) {
@@ -50,4 +48,4 @@ const useMonitormovementCharacteristic = () => {
   return { decodedString };
 };
 
-export default useMonitormovementCharacteristic;
+export default useMonitorMovementCharacteristic;

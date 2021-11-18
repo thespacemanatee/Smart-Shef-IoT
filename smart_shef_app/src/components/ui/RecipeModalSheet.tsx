@@ -55,9 +55,10 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
           break;
         }
         default: {
-          sheetRef.current?.close();
+          // noop
         }
       }
+      sheetRef.current?.close();
     }
   };
 

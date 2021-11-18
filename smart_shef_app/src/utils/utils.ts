@@ -53,7 +53,7 @@ export const getTemperatureFromBarometer = (barometer: string) => {
   return (barometer.charCodeAt(0) + barometer.charCodeAt(1) * 256) / 100 || 0;
 };
 
-export const getAcceletometerData = (movement: string) => {
+export const getAccelerometerData = (movement: string) => {
   const x = sensorMpu9250AccConvert(
     movement.charCodeAt(6) + movement.charCodeAt(7) * 256,
   );

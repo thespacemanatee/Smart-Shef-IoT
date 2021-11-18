@@ -13,10 +13,10 @@ import BluetoothScreen from "../screens/settings/BluetoothScreen";
 import Title from "../components/typography/Title";
 import { FONT_SIZE, SPACING } from "../resources/dimens";
 import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
-import PancakeCookingProgressScreen from "../screens/PancakeCookingProgressScreen";
+import PancakeCookingProgressScreen from "../screens/cooking/PancakeCookingProgressScreen";
 import SensorsScreen from "../screens/settings/SensorsScreen";
-import PancakeCookingDoneScreen from "../screens/PancakeCookingDoneScreen";
-import PopcornCookingProgressScreen from "../screens/PopcornCookingProgressScreen";
+import CookingDoneScreen from "../screens/cooking/CookingDoneScreen";
+import PopcornCookingProgressScreen from "../screens/cooking/PopcornCookingProgressScreen";
 
 const AppNavigator = (): JSX.Element => {
   const Tab = createBottomTabNavigator();
@@ -31,18 +31,12 @@ const AppNavigator = (): JSX.Element => {
           name="PancakeCookingProgress"
           component={PancakeCookingProgressScreen}
         />
-        <Screen
-          name="PancakeCookingDone"
-          component={PancakeCookingDoneScreen}
-        />
+        <Screen name="PancakeCookingDone" component={CookingDoneScreen} />
         <Screen
           name="PopcornCookingProgress"
           component={PopcornCookingProgressScreen}
         />
-        <Screen
-          name="PopcornCookingDone"
-          component={PancakeCookingDoneScreen}
-        />
+        <Screen name="PopcornCookingDone" component={CookingDoneScreen} />
       </Navigator>
     );
   };
