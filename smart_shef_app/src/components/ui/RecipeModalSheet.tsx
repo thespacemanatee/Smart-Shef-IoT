@@ -44,8 +44,20 @@ const RecipeModalSheet = ({ sheetRef, navigation }: RecipeModalSheetProps) => {
         };
         publishCookingProcess(client, payload);
       }
-      navigation.navigate("PancakeCookingProgress");
-      sheetRef.current?.close();
+      console.log(selectedRecipe?.name);
+      switch (selectedRecipe?.name) {
+        case "Pancake": {
+          navigation.navigate("PancakeCookingProgress");
+          break;
+        }
+        case "Popcorn": {
+          navigation.navigate("PopcornCookingProgress");
+          break;
+        }
+        default: {
+          sheetRef.current?.close();
+        }
+      }
     }
   };
 

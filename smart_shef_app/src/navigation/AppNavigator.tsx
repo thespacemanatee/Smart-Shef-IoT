@@ -16,6 +16,7 @@ import EquipmentSetupScreen from "../screens/EquipmentSetupScreen";
 import PancakeCookingProgressScreen from "../screens/PancakeCookingProgressScreen";
 import SensorsScreen from "../screens/settings/SensorsScreen";
 import PancakeCookingDoneScreen from "../screens/PancakeCookingDoneScreen";
+import PopcornCookingProgressScreen from "../screens/PopcornCookingProgressScreen";
 
 const AppNavigator = (): JSX.Element => {
   const Tab = createBottomTabNavigator();
@@ -32,6 +33,14 @@ const AppNavigator = (): JSX.Element => {
         />
         <Screen
           name="PancakeCookingDone"
+          component={PancakeCookingDoneScreen}
+        />
+        <Screen
+          name="PopcornCookingProgress"
+          component={PopcornCookingProgressScreen}
+        />
+        <Screen
+          name="PopcornCookingDone"
           component={PancakeCookingDoneScreen}
         />
       </Navigator>

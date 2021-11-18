@@ -3,4 +3,6 @@ export type HomeStackParamList = {
   EquipmentSetup: undefined;
   PancakeCookingProgress: undefined;
   PancakeCookingDone: undefined;
+  PopcornCookingProgress: undefined;
+  PopcornCookingDone: undefined;
 };
