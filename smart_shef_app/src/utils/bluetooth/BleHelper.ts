@@ -12,9 +12,14 @@ import {
   FIRMWARE_REVISION_CHARACTERISTIC_UUID,
   HUMIDITY_CONFIG_CHARACTERISTIC_UUID,
   HUMIDITY_DATA_CHARACTERISTIC_UUID,
+  HUMIDITY_PERIOD_CHARACTERISTIC_UUID,
   HUMIDITY_SERVICE_UUID,
   MANUFACTURER_NAME_CHARACTERISTIC_UUID,
   MODEL_NUMBER_CHARACTERISTIC_UUID,
+  MOVEMENT_CONFIG_CHARACTERISTIC_UUID,
+  MOVEMENT_DATA_CHARACTERISTIC_UUID,
+  MOVEMENT_PERIOD_CHARACTERISTIC_UUID,
+  MOVEMENT_SERVICE_UUID,
   SERIAL_NUMBER_CHARACTERISTIC_UUID,
 } from ".";
 
@@ -87,7 +92,11 @@ export const getHumidityCharacteristics = async () => {
     HUMIDITY_SERVICE_UUID,
     HUMIDITY_CONFIG_CHARACTERISTIC_UUID,
   );
-  return { humidityDataChar, humidityConfigChar };
+  const humidityPeriodChar = await getCharacteristic(
+    HUMIDITY_SERVICE_UUID,
+    HUMIDITY_PERIOD_CHARACTERISTIC_UUID,
+  );
+  return { humidityDataChar, humidityConfigChar, humidityPeriodChar };
 };
 
 export const getBarometerCharacteristics = async () => {
@@ -100,6 +109,22 @@ export const getBarometerCharacteristics = async () => {
     BAROMETER_CONFIG_CHARACTERISTIC_UUID,
   );
   return { barometerDataChar, barometerConfigChar };
+};
+
+export const getMovementCharacteristics = async () => {
+  const movementDataChar = await getCharacteristic(
+    MOVEMENT_SERVICE_UUID,
+    MOVEMENT_DATA_CHARACTERISTIC_UUID,
+  );
+  const movementConfigChar = await getCharacteristic(
+    MOVEMENT_SERVICE_UUID,
+    MOVEMENT_CONFIG_CHARACTERISTIC_UUID,
+  );
+  const movementPeriodChar = await getCharacteristic(
+    MOVEMENT_SERVICE_UUID,
+    MOVEMENT_PERIOD_CHARACTERISTIC_UUID,
+  );
+  return { movementDataChar, movementConfigChar, movementPeriodChar };
 };
 
 const getCharacteristic = async (

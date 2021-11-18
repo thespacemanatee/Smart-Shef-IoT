@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 
-import PanWithTemperature from "../elements/PanWithTemperature";
 import CountdownTimer from "../graphics/pancake/CountdownTimer";
+import FirePan from "../graphics/pancake/FirePan";
 import OilPan from "../graphics/pancake/OilPan";
 import PancakeFlipping from "../graphics/pancake/PancakeFlipping";
 import PancakeNoBubbles from "../graphics/pancake/PancakesNoBubbles";
@@ -14,7 +14,7 @@ const GRAPHIC_HEIGHT = 246;
 
 const infos = [
   "Add a thin layer of oil to the pan",
-  "Heat your pan to 40°C",
+  "Heat up your pan until it is hot enough!",
   "Add 3 scoops of prepared batter",
   "Wait till you see holes form on the top",
   "Flip now!",
@@ -23,23 +23,21 @@ const infos = [
 
 interface PancakeCookingStageGraphicsProps {
   step: number;
-  temperature: number;
 }
 
 const PancakeCookingStageGraphics = ({
   step,
-  temperature,
 }: PancakeCookingStageGraphicsProps) => {
   const graphics = useMemo(
     () => [
       <OilPan />,
-      <PanWithTemperature temperature={temperature} />,
+      <FirePan />,
       <PancakeNoBubbles />,
       <PancakeWithBubbles />,
       <PancakeFlipping />,
       <CountdownTimer />,
     ],
-    [temperature],
+    [],
   );
 
   return (

@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { Characteristic, Subscription } from "react-native-ble-plx";
 
-import {
-  DISABLE_DATA_COLLECTION,
-  ENABLE_DATA_COLLECTION,
-  SENSOR_PERIOD,
-} from "../bluetooth";
+import { MOVEMENT_CONFIG, MOVEMENT_DISABLE, SENSOR_PERIOD } from "../bluetooth";
 import {
   decodeBleString,
-  getHumidityCharacteristics,
+  getMovementCharacteristics,
 } from "../bluetooth/BleHelper";
 
-const useMonitorHumidityCharacteristic = () => {
+const useMonitormovementCharacteristic = () => {
   const [decodedString, setDecodedString] = useState("");
 
   useEffect(() => {
@@ -19,17 +15,18 @@ const useMonitorHumidityCharacteristic = () => {
     let characteristic: Characteristic | null;
     const monitor = async () => {
       try {
-        const { humidityDataChar, humidityConfigChar, humidityPeriodChar } =
-          await getHumidityCharacteristics();
-        await humidityConfigChar?.writeWithResponse(ENABLE_DATA_COLLECTION);
-        await humidityPeriodChar?.writeWithResponse(SENSOR_PERIOD);
+        const { movementDataChar, movementConfigChar, movementPeriodChar } =
+          await getMovementCharacteristics();
+        await movementConfigChar?.writeWithResponse(MOVEMENT_CONFIG);
+        await movementPeriodChar?.writeWithResponse(SENSOR_PERIOD);
 
-        characteristic = humidityConfigChar;
-        subscription = humidityDataChar?.monitor((err, char) => {
+        characteristic = movementConfigChar;
+        subscription = movementDataChar?.monitor((err, char) => {
           if (err) {
             console.error(JSON.stringify(err));
             return;
           }
+          console.log(char);
           setDecodedString(decodeBleString(char?.value));
         });
       } catch (err) {
@@ -41,7 +38,7 @@ const useMonitorHumidityCharacteristic = () => {
     return () => {
       try {
         (async () => {
-          await characteristic?.writeWithResponse(DISABLE_DATA_COLLECTION);
+          await characteristic?.writeWithResponse(MOVEMENT_DISABLE);
           subscription?.remove();
         })();
       } catch (err) {
@@ -53,4 +50,4 @@ const useMonitorHumidityCharacteristic = () => {
   return { decodedString };
 };
 
-export default useMonitorHumidityCharacteristic;
+export default useMonitormovementCharacteristic;

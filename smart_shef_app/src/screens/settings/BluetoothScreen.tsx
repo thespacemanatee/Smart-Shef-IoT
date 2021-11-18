@@ -17,6 +17,7 @@ import useScanDevices from "../../utils/hooks/useScanDevices";
 import { store } from "../../app/store";
 import DebugSection from "../../components/elements/DebugSection";
 import BluetoothTemperatureDetails from "../../components/ui/debug/BluetoothTemperatureDetails.tsx";
+import BluetoothMovementDetails from "../../components/ui/debug/BluetoothMovementDetails";
 
 const BluetoothScreen = () => {
   const [visible, setVisible] = useState(false);
@@ -98,6 +99,9 @@ const BluetoothScreen = () => {
             </DebugSection>
             <DebugSection label="Temperature">
               <BluetoothTemperatureDetails />
+            </DebugSection>
+            <DebugSection label="Movement">
+              <BluetoothMovementDetails />
             </DebugSection>
           </ScrollView>
         ) : (

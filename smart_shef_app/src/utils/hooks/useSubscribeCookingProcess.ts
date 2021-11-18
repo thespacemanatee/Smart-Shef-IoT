@@ -11,6 +11,8 @@ const useSubscribeCookingProcess = () => {
   useEffect(() => {
     if (log?.topic === "smartshef/cooking-process") {
       const payload = JSON.parse(log?.message);
+      console.log(payload.stage, payload.step);
+
       setStatus(payload.status);
       setStage(payload.stage);
       setStep(payload.step);

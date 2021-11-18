@@ -52,3 +52,20 @@ export const getTemperatureFromHumidity = (humidity: string) => {
 export const getTemperatureFromBarometer = (barometer: string) => {
   return (barometer.charCodeAt(0) + barometer.charCodeAt(1) * 256) / 100 || 0;
 };
+
+export const getAcceletometerData = (movement: string) => {
+  const x = sensorMpu9250AccConvert(
+    movement.charCodeAt(6) + movement.charCodeAt(7) * 256,
+  );
+  const y = sensorMpu9250AccConvert(
+    movement.charCodeAt(8) + movement.charCodeAt(9) * 256,
+  );
+  const z = sensorMpu9250AccConvert(
+    movement.charCodeAt(10) + movement.charCodeAt(11) * 256,
+  );
+  return { x, y, z };
+};
+
+const sensorMpu9250AccConvert = (rawData: number) => {
+  return (rawData * 1.0) / (32768 / 2);
+};

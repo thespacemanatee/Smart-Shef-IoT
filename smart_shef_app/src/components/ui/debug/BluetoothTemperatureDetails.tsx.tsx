@@ -9,7 +9,7 @@ import {
 } from "../../../utils/utils";
 import DebugEntry from "../../elements/DebugEntry";
 
-const BluetoothDeviceDetails = () => {
+const BluetoothTemperatureDetails = () => {
   const { decodedString: humidity } = useMonitorHumidityCharacteristic();
   const { decodedString: barometer } = useMonitorBarometerCharacteristic();
 
@@ -27,4 +27,4 @@ const BluetoothDeviceDetails = () => {
   );
 };
 
-export default BluetoothDeviceDetails;
+export default BluetoothTemperatureDetails;

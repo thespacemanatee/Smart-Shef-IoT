@@ -29,6 +29,7 @@ import { getTemperatureFromHumidity } from "../utils/utils";
 
 const CAMERA_WIDTH = Dimensions.get("window").width;
 const CAMERA_HEIGHT = (CAMERA_WIDTH / 3) * 4;
+const PUBLISH_INTERVAL = 5000;
 
 type EquipmentSetupScreenProps = StackScreenProps<
   HomeStackParamList,
@@ -46,7 +47,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
   const dispatch = useAppDispatch();
   const client = useMQTTClient();
   const { decodedString: humidity } = useMonitorHumidityCharacteristic();
-  const { status } = useSubscribeCookingProcess();
+  const { status, stage } = useSubscribeCookingProcess();
 
   useEffect(() => {
     if (status === "done") {
@@ -78,13 +79,13 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
       step: 0,
     };
     if (client) {
+      console.log("Publishing ready to client");
       publishCookingProcess(client, processPayload);
     }
     setPublishJob(
       setInterval(() => {
         takePicture();
-        takeTemperature();
-      }, 2000),
+      }, PUBLISH_INTERVAL),
     );
   };
 
@@ -97,6 +98,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
       status: "done",
     };
     if (client) {
+      console.log("Publishing done to client");
       publishCookingProcess(client, payload);
     }
   };
@@ -114,16 +116,25 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
     }
   }, [client]);
 
-  const takeTemperature = useCallback(() => {
-    const tempPayload = {
-      temperature: getTemperatureFromHumidity(humidity).toFixed(2),
-      timestamp: Date.now(),
-    };
+  const takeTemperature = useCallback(
+    (hum: string) => {
+      const tempPayload = {
+        temperature: getTemperatureFromHumidity(hum).toFixed(2),
+        timestamp: Date.now(),
+      };
 
-    if (client) {
-      publishTemperature(client, tempPayload);
+      if (client) {
+        publishTemperature(client, tempPayload);
+      }
+    },
+    [client],
+  );
+
+  useEffect(() => {
+    if (status === "ready" && stage === 1) {
+      takeTemperature(humidity);
     }
-  }, [client, humidity]);
+  }, [humidity, stage, status, takeTemperature]);
 
   useEffect(() => {
     return () => {
@@ -155,7 +166,7 @@ const EquipmentSetupScreen = ({ navigation }: EquipmentSetupScreenProps) => {
               </View>
               <View style={styles.buttonContainer}>
                 <CTAButton
-                  label={status === "started" ? "I'm Ready" : "Done"}
+                  label={status === "ready" ? "Done" : "I'm Ready"}
                   onPress={
                     status === "ready" ? handlePressDone : handlePressReady
                   }

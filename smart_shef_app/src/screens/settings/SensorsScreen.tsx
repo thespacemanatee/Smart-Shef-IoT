@@ -1,7 +1,14 @@
-import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import LiveAudioStream from "react-native-live-audio-stream";
+import React from "react";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import AudioRecorderPlayer, {
+  AudioEncoderAndroidType,
+  AudioSet,
+  AudioSourceAndroidType,
+  AVEncoderAudioQualityIOSType,
+  AVEncodingOption,
+} from "react-native-audio-recorder-player";
 import { Button } from "react-native-paper";
+import RNFetchBlob from "rn-fetch-blob";
 
 import DebugSection from "../../components/elements/DebugSection";
 import { SPACING } from "../../resources/dimens";
@@ -9,37 +16,41 @@ import { publishAudioChunk } from "../../service/mqtt";
 import useMQTTClient from "../../utils/hooks/useMQTTClient";
 import { requestRecordAudioPermissions } from "../../utils/utils";
 
-const options = {
-  sampleRate: 32000, // default is 44100 but 32000 is adequate for accurate voice recognition
-  channels: 1, // 1 or 2, default 1
-  bitsPerSample: 16, // 8 or 16, default 16
-  audioSource: 0, // android only
-  bufferSize: 4096, // default is 2048
+const { dirs } = RNFetchBlob.fs;
+
+const path = Platform.select({
+  ios: "recording.m4a",
+  android: `${dirs.CacheDir}/recording.mp3`,
+});
+
+const audioSet: AudioSet = {
+  AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+  AudioSourceAndroid: AudioSourceAndroidType.DEFAULT,
+  AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+  AVNumberOfChannelsKeyIOS: 2,
+  AVFormatIDKeyIOS: AVEncodingOption.aac,
 };
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const SensorsScreen = (): JSX.Element => {
   const client = useMQTTClient();
 
   const startRecording = async () => {
-    const granted = await requestRecordAudioPermissions();
-    if (granted) {
-      LiveAudioStream.start();
+    requestRecordAudioPermissions();
+    const uri = await audioRecorderPlayer.startRecorder(path, audioSet);
+    console.log(`Start recording at: ${uri}`);
+  };
 
-      LiveAudioStream.on("data", data => {
-        if (client) {
-          publishAudioChunk(client, data);
-        }
-      });
+  const stopRecording = async () => {
+    // LiveAudioStream.stop();
+    const uri = await audioRecorderPlayer.stopRecorder();
+    const audio = await RNFetchBlob.fs.readFile(uri, "base64");
+    if (client) {
+      console.log("Publishing audio to client");
+      publishAudioChunk(client, audio);
     }
   };
-
-  const stopRecording = () => {
-    LiveAudioStream.stop();
-  };
-
-  useEffect(() => {
-    LiveAudioStream.init(options);
-  }, []);
 
   return (
     <View style={styles.screen}>
